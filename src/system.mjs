@@ -1,21 +1,24 @@
 import * as THREE from "three";
 import * as utils from "./utils.mjs";
 
-export class System extends THREE.Mesh
+export class System extends THREE.Group
 {
-    constructor()
+    constructor(url)
     {
-        var geom=new THREE.CircleGeometry(0.05, 6)
-        geom.rotateX(-Math.PI / 2);
-        geom.translate(0, 0.001, 0);
-        super(geom);
+        super()
+        
+        utils.gltf.loadAsync("System.glb").then((result) => {
+            const top=result.scene.getObjectByName("top");
+            new THREE.TextureLoader().loadAsync(url).then((texture) =>
+            {
+                texture.colorSpace = THREE.SRGBColorSpace;
+                texture.flipY = false;
+                top.material = new THREE.MeshStandardMaterial({ map: texture });
+                this.add(top);    
+            })
 
-        const texture = new THREE.TextureLoader().load(
-          "https://cdn.statically.io/gh/AsyncTI4/TI4_map_generator_bot/master/src/main/resources/tiles/18_MR.png?raw=true"
-        );
-        // immediately use the texture for material creation
-
-        this.material = new THREE.MeshStandardMaterial({ map: texture });
+            this.add(result.scene.getObjectByName("sides"));
+        });
     }
     
 } 

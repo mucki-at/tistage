@@ -26,7 +26,7 @@ export class Room extends THREE.Scene
             minRadius,
             maxRadius*2
         );
-        this.#camera.position.set(maxRadius/2,maxRadius/6,maxRadius/4);
+        this.#camera.position.set(0,maxRadius/6,maxRadius/4);
         this.#camera.lookAt(0, 0, 0);
         
         const hdrLoader = new RGBELoader();
