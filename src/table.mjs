@@ -1,9 +1,10 @@
-import { Mesh, CircleGeometry, Vector3 } from "three";
+import * as THREE from "three";
 import * as utils from "./utils.mjs";
+import { randFloat } from "three/src/math/MathUtils.js";
 
-export class Table extends Mesh {
+export class Table extends THREE.Mesh {
     constructor(radius, texture) {
-        var geom = new CircleGeometry(radius, 6, Math.PI/6);
+        var geom = new THREE.CircleGeometry(radius, 6, Math.PI/6);
         geom.rotateX(-Math.PI / 2);
         super(geom);
 
@@ -13,7 +14,7 @@ export class Table extends Mesh {
         });
     }
 
-    static TileRadius = 0.06;
+    static TileRadius = 0.0585;
     static basis = [1, 0, 0, 1];
     static basis_inv = [1, 0, 0, 1];
     static directions = [
@@ -63,7 +64,7 @@ export class Table extends Mesh {
 
     static Vector3FromAxial(axial) {
         const cart = this.CartesianFromAxial(axial);
-        return new Vector3(cart[0], 0, -cart[1]);
+        return new THREE.Vector3(cart[0], 0, -cart[1]);
     }
 
     static AxialFromVector3(vector) {
@@ -126,6 +127,9 @@ export class Table extends Mesh {
         }
         system.tileId = tileId;
         system.position.copy(Table.Vector3FromAxial(tileId));
+        system.rotateY(THREE.MathUtils.randFloat(-0.02, 0.02));
+        system.rotateX(THREE.MathUtils.randFloat(-0.01, 0.01));
+        system.rotateZ(THREE.MathUtils.randFloat(-0.01, 0.01));
         this.add(system);
     }
 }

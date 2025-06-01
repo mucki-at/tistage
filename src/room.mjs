@@ -29,12 +29,15 @@ export class Room extends THREE.Scene
         this.#camera.position.set(0,maxRadius/6,maxRadius/4);
         this.#camera.lookAt(0, 0, 0);
         
+        this.background = new THREE.Color("gray")
+
         const hdrLoader = new RGBELoader();
-        const envMap = await hdrLoader.loadAsync(environment);
-        envMap.mapping = THREE.EquirectangularReflectionMapping;
-        
-        this.environment = envMap;
-        this.background = this.environment;
+        hdrLoader.loadAsync(environment).then((envMap) => {
+            envMap.mapping = THREE.EquirectangularReflectionMapping;
+            this.environment = envMap;
+            this.background = this.environment;
+            window.updateRoom();
+        });
         
         this.#renderer = new THREE.WebGLRenderer({ antialias: true });
         this.#renderer.setPixelRatio(window.devicePixelRatio);
