@@ -57,7 +57,7 @@ export class Room extends THREE.Scene
         controls.update();
         
         document.body.appendChild(this.#renderer.domElement);
-        window.addEventListener("resize", this.#onWindowResize.bind(this));        
+        window.addEventListener("resize", this.#onWindowResize.bind(this));  
     }
     
     #onWindowResize()

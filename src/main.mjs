@@ -4,7 +4,7 @@ import {Table} from "./table.mjs"
 import {System} from "./system.mjs"
 
 var room=new Room()
-room.init("old_room_4k.hdr",0.1,2);
+room.init("old_room_4k.hdr",0.1,2).then(window.updateRoom);
 
 var table = new Table(0.7, "wood_cabinet_worn_long_4k.gltf");
 room.add(table);
@@ -21,4 +21,3 @@ for (var ring=1; ring<=5; ++ring)
         ++sys;
     }
 }
-   

@@ -8,6 +8,9 @@ export class Table extends THREE.Mesh {
         geom.rotateX(-Math.PI / 2);
         super(geom);
 
+        this.material=new THREE.MeshBasicMaterial();
+        this.material.color = new THREE.Color('saddlebrown');
+
         utils.asyncLoadGltfMaterial(texture).then((mat) => {
             this.material = mat;
             window.updateRoom();
