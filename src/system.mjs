@@ -31,6 +31,7 @@ export class System extends THREE.Group {
             const top = parts.top.clone();
             this.add(top);
             this.add(parts.sides.clone());
+            window.updateRoom();
 
             System.getDescription(id)
                 .then((data) => {
@@ -58,23 +59,5 @@ export class System extends THREE.Group {
                     );
                 });
         });
-        /*
-    
-
-    fetch(System.RepoURL + "systems/" + id2 + ".json")
-      .then((response) => response.json())
-      .then((data) => {
-        // Use the data here
-        utils.gltf.loadAsync("System.glb").then((result) => {
-          const top = result.scene.getObjectByName("top");
-          
-
-          this.add(result.scene.getObjectByName("sides"));
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching JSON:", error);
-      });
-    */
     }
 }
