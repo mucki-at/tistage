@@ -31,11 +31,15 @@ export class Room extends THREE.Scene
         
         this.background = new THREE.Color("gray")
 
+        const dummyLight = new THREE.AmbientLight(0xFFFFFF); // soft white light
+        this.add(dummyLight);
+
         const hdrLoader = new RGBELoader();
         hdrLoader.loadAsync(environment).then((envMap) => {
             envMap.mapping = THREE.EquirectangularReflectionMapping;
             this.environment = envMap;
             this.background = this.environment;
+            dummyLight.removeFromParent();
             window.updateRoom();
         });
         
