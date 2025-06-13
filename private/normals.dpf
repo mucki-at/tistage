@@ -1,0 +1,1 @@
+--format bc5 --quality normal --mips --mip-filter box --zcmp 5 --to-normal --normal-filter 9x9 --normal-scale 1 --height red --normal-alpha unchanged
