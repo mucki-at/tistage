@@ -2,15 +2,16 @@ import * as THREE from "three";
 import * as utils from "./utils.mjs";
 
 export class Units {
+    static #unitNames = ["cruiser","carrier","destroyer","dreadnaught","fighter","flagship","infantry","mech","pds","spacedock","warsun"];
     static #dispatch = new THREE.EventDispatcher();
     static #template = utils.gltf
         .loadAsync("Saunick.glb")
         .then((result) => {
-            return {
-                fighter: result.scene.getObjectByName("fighter"),
-                destroyer: result.scene.getObjectByName("destroyer"),
-                cruiser: result.scene.getObjectByName("cruiser"),
-            };
+            var units = {};
+            Units.#unitNames.forEach((name) => {
+                units[name] = result.scene.getObjectByName(name);
+            });
+            return units;
         })
         .then((template) => {
             Units.#dispatch.dispatchEvent({
@@ -52,6 +53,7 @@ export class Unit extends THREE.Mesh {
         super();
         this.name = id;
         this.castShadow = true; //default is false
+        this.color="white";
 
         Units.registerUnit(this);
     }
@@ -69,10 +71,15 @@ export class Unit extends THREE.Mesh {
 
         if (this.geometry != source.geometry) {
             this.geometry = source.geometry;
+            if (this.material) this.material.dispose();
+            this.material = source.material.clone();
+            this.material.color.setStyle(this.color);
         }
+    }
 
-        if (this.material != source.material) {
-            this.material = source.material;
-        }
+    setColor(color)
+    {
+        this.color=color
+        if (this.material) this.material.color.setStyle(this.color);
     }
 }

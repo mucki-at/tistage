@@ -110,7 +110,7 @@ export class Table extends THREE.Mesh {
 
         var side = Math.ceil(slot / ring)-1;
         var dir = (side + 2) % 6;
-        var steps = slot % ring;
+        var steps = (slot-1) % ring;
 
         var a = this.directions[side][0] * ring;
         var b = this.directions[side][1] * ring;
@@ -134,5 +134,11 @@ export class Table extends THREE.Mesh {
         system.rotateX(THREE.MathUtils.randFloat(-0.01, 0.01));
         system.rotateZ(THREE.MathUtils.randFloat(-0.01, 0.01));
         this.add(system);
+    }
+
+    clearSystems()
+    {
+        const systems = this.children.filter((obj) => Object.hasOwn(obj, "tileId"));
+        this.remove.apply(this, systems);
     }
 }

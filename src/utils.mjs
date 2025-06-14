@@ -45,3 +45,14 @@ export function sleeper(ms) {
     };
 }
 
+export function LoadJsonAsync(url)
+{
+    // Example: Load a JSON file using fetch
+    return fetch(url) // Replace 'data.json' with the path to your JSON file
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // Parse the JSON from the response
+        });
+}

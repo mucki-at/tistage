@@ -73,7 +73,7 @@ export class Room extends THREE.Scene
         keyLight.shadow.camera.far = 1.5; // default
 
         this.add(keyLight);
-        this.add(new THREE.CameraHelper(keyLight.shadow.camera));
+        //this.add(new THREE.CameraHelper(keyLight.shadow.camera));
 
         const controls = new OrbitControls(
             this.#camera,
