@@ -38,6 +38,23 @@ button {
   /* TODO Solve this in HTML */
 }
 
+
+#sidebar {
+  position: absolute;
+    z-index: 2;
+    top: 10px;
+    left: 10px;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.7);
+    /* TODO Solve this in HTML */
+}
+
+#system {
+}
+
+#unit {
+}
+
 a,
 button,
 input,

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { MapControls } from "three/addons/controls/MapControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 import * as utils from "./utils.mjs";
@@ -14,6 +14,7 @@ export class Room extends THREE.Scene
 
     #camera = null;
     #renderer = null;
+    #raycaster = null; 
 
     render()
     {
@@ -37,6 +38,8 @@ export class Room extends THREE.Scene
         this.#renderer.toneMapping = THREE.ACESFilmicToneMapping;
         this.#renderer.shadowMap.enabled = true;
         this.#renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
+        this.#raycaster = new THREE.Raycaster();
 
         window.updateRoom = this.render.bind(this);
         //
@@ -75,20 +78,25 @@ export class Room extends THREE.Scene
         this.add(keyLight);
         //this.add(new THREE.CameraHelper(keyLight.shadow.camera));
 
-        const controls = new OrbitControls(
+        const controls = new MapControls(
             this.#camera,
             this.#renderer.domElement
         );
+        controls.mouseButtons = {
+            LEFT: null,
+            MIDDLE: THREE.MOUSE.DOLLY,
+            RIGHT: THREE.MOUSE.PAN
+        };
         controls.addEventListener("change", window.updateRoom);
         controls.target.set(0, 0, 0);
         controls.maxPolarAngle = THREE.MathUtils.degToRad(90);
         controls.maxDistance = maxRadius;
         controls.minDistance = minRadius;
-        controls.enablePan = false;
         controls.update();
 
         document.body.appendChild(this.#renderer.domElement);
         window.addEventListener("resize", this.#onWindowResize.bind(this));
+        window.addEventListener("click", this.#onMouseClick.bind(this));
     }
     
     #onWindowResize()
@@ -99,5 +107,30 @@ export class Room extends THREE.Scene
         this.#renderer.setSize(window.innerWidth, window.innerHeight);
         
         window.updateRoom();
-    }    
+    }
+
+    #onMouseClick(event)
+    {
+        const pointer = new THREE.Vector2();
+        pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // update the picking ray with the camera and pointer position
+        this.#raycaster.setFromCamera(pointer, this.#camera);
+
+        // calculate objects intersecting the picking ray
+        const intersects = this.#raycaster.intersectObjects(this.children);
+
+        if (intersects.length > 0)
+        {
+            let obj = intersects[0].object;
+            while (obj && !obj.onObjectSelected)
+            {
+                obj = obj.parent;
+            }
+            if (obj) obj.onObjectSelected?.(event, intersects[0]);
+        }
+    }
+
+
 }

@@ -53,7 +53,7 @@ export class Unit extends THREE.Mesh {
         super();
         this.name = id;
         this.castShadow = true; //default is false
-        this.color="white";
+        this.color = "white";
 
         Units.registerUnit(this);
     }
@@ -77,9 +77,14 @@ export class Unit extends THREE.Mesh {
         }
     }
 
-    setColor(color)
-    {
-        this.color=color
+    setColor(color) {
+        this.color = color;
         if (this.material) this.material.color.setStyle(this.color);
+    }
+
+    onObjectSelected(event, intersection)
+    {
+        document.querySelector("#unit > #name").innerHTML = this.name;
+        document.querySelector("#unit > #color").innerHTML = this.color;
     }
 }

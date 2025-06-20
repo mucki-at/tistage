@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import * as utils from "./utils.mjs";
-import { randFloat } from "three/src/math/MathUtils.js";
 
 export class Table extends THREE.Mesh {
     constructor(radius, texture) {
@@ -140,5 +139,13 @@ export class Table extends THREE.Mesh {
     {
         const systems = this.children.filter((obj) => Object.hasOwn(obj, "tileId"));
         this.remove.apply(this, systems);
+    }
+
+    relayout()
+    {
+        const systems = this.children.filter((obj) =>
+            Object.hasOwn(obj, "tileId")
+        );
+        systems.forEach((system) => system.layoutUnits());
     }
 }

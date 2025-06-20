@@ -25,15 +25,22 @@ let gameSettings = {
         }
         game.reload(url);
     },
+    relayout: function () {
+        table.relayout();
+        window.updateRoom();
+    },
 };
 
 const panel = new GUI({ width: 310 });
 const folder1 = panel.addFolder("Game");
 folder1.add(gameSettings, "id");
 folder1.add(gameSettings, "reload");
+const folder2 = panel.addFolder("Units");
+folder2.add(gameSettings, "relayout");
 
 gameSettings.reload();
-			
+
+
 /*
 table.setSystem(Table.TileIdFromRingAndSlot(0, 0), new System(18));
 table.setSystem(Table.TileIdFromRingAndSlot(1, 1), new System(19));

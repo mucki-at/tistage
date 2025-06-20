@@ -62,13 +62,35 @@ export class Game {
                         units.forEach((unitDef) => {
                             if (unitDef.entityType == "unit")
                             {
-                                const unit = new Unit(
-                                    Game.unitNames[unitDef.entityId]
-                                );
-                                unit.setColor(color);
-                                system.addUnit(unit);
+                                for (let i=0; i<unitDef.count; ++i)
+                                {
+                                    const unit = new Unit(
+                                        Game.unitNames[unitDef.entityId]
+                                    );
+                                    unit.setColor(color);
+                                    system.addUnit(unit, "space");
+                                }
                             }
                         });
+                    }
+                    for (const [name, planet] of Object.entries(data.planets))
+                    {
+                        for (const [faction, units] of Object.entries(planet.entities))
+                        {
+                            const color = factionColors[faction];
+                            units.forEach((unitDef) => {
+                                if (unitDef.entityType == "unit") {
+                                    for (let i=0; i<unitDef.count; ++i)
+                                    {
+                                                const unit = new Unit(
+                                            Game.unitNames[unitDef.entityId]
+                                        );
+                                        unit.setColor(color);
+                                        system.addUnit(unit, name);
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             }
