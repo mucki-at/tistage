@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { Room } from "./room.mjs";
+import { Table } from "./table.mjs";
 import * as utils from "./utils.mjs";
-import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
+import { UnitLayout } from "./unitlayout.mjs";
 
 export class System extends THREE.Group {
     static #RepoURL =
@@ -13,24 +14,31 @@ export class System extends THREE.Group {
             const top = result.scene.getObjectByName("top");
             const sides = result.scene.getObjectByName("sides");
 
-            let types = [];
+            const boundsObj = result.scene.getObjectByName("bounds");
+            const bounds =
+            {
+                x: boundsObj.position.x,
+                y: boundsObj.position.z,
+                radius: parseFloat(boundsObj.userData.radius)
+            };
 
+            let types = {};
             for (let i = 1; i <= 15; ++i) {
                 const i2 = i.toString().padStart(2, "0");
                 const i3 = i.toString().padStart(3, "0");
-                const type = result.scene.getObjectByName(`TYPE${i2}`);
 
-                const space = type.getObjectByName(`space${i3}`);
-                space.sampler = new MeshSurfaceSampler(space).build();
                 let planets = [];
                 for (let j = 0; j < 3; ++j) {
-                    const p = type.getObjectByName(`planet${j}${i3}`);
+                    const p = result.scene.getObjectByName(`planet${j}${i3}`);
                     if (p) {
-                        p.sampler = new MeshSurfaceSampler(p).build();
-                        planets[j] = p;
+                        planets[j] = {
+                            x: p.position.x,
+                            y: p.position.z,
+                            radius: parseFloat(p.userData.radius),
+                        };
                     }
                 }
-                types[`TYPE${i2}`] = { space: space, planets: planets };
+                types[`TYPE${i2}`] = new UnitLayout(bounds, planets);
             }
 
             return { top: top, sides: sides, types: types };
@@ -49,47 +57,28 @@ export class System extends THREE.Group {
 
     constructor(id) {
         super();
-        this.locations = new Map();
+        this.locations = new Map(); // map of location name -> layout id and units in that location
+        this.locations.set("space", { id: 0, units: [] });
+        this.layout = null;
 
         System.#template.then((parts) => {
             const top = parts.top?.clone();
             if (top) this.add(top);
             this.add(parts.sides?.clone());
-            Room.updateRoom();
 
             System.getDescription(id)
                 .then((data) => {
                     this.description = data;
-                    let type = parts.types[data.shipPositionsType];
-                    if (this.locations.has("space"))
-                    {
-                        let loc = this.locations.get("space");
-                        loc.offset = type.space.position;
-                        loc.sampler = type.space.sampler;
-                    }
-                    else
-                    {
-                        this.locations.set("space",{
-                            units: [],
-                            offset: type.space.position,
-                            sampler: type.space.sampler
-                        });
-                    }
+                    this.layout = parts.types[data.shipPositionsType];
 
-                    data.planets.forEach((name, index)=> {
-                        const p = type.planets[index];
-                        if (this.locations.has(name))
-                        {
+                    data.planets.forEach((name, index) => {
+                        if (this.locations.has(name)) {
                             let loc = this.locations.get(name);
-                            loc.offset = p.position;
-                            loc.sampler = p.sampler;
-                        }
-                        else
-                        {
+                            loc.id = index+1;
+                        } else {
                             this.locations.set(name, {
-                                units: [],
-                                offset: p.position,
-                                sampler: p.sampler
+                                id: index+1,
+                                units: []
                             });
                         }
                     });
@@ -118,6 +107,7 @@ export class System extends THREE.Group {
                         error
                     );
                 });
+            Room.updateRoom();
         });
     }
 
@@ -145,10 +135,10 @@ export class System extends THREE.Group {
         }
         else
         {
-            this.locations.set(location, {
-                units: [unit],
-                offset: null,
-                sampler: null,
+            this.locations.set(location,
+            {
+                id: 0,
+                units: [unit]
             });
         }
     }
@@ -167,19 +157,10 @@ export class System extends THREE.Group {
 
     layoutUnits()
     {
-        this.locations.forEach((location, name, map) => {
-            const sampler = location.sampler;
-            if (sampler) {
-                location.units.forEach((unit) => {
-                    sampler.sample(unit.position);
-                    unit.position.add(location.offset);
-                    unit.quaternion.identity();
-                    unit.rotateY(THREE.MathUtils.randFloat(-Math.PI, Math.PI));
-                    unit.rotateX(THREE.MathUtils.randFloat(-0.01, 0.01));
-                    unit.rotateZ(THREE.MathUtils.randFloat(-0.01, 0.01));
-                });
-            }
-        });
+        if (this.layout)
+        {
+            this.locations.forEach((location, name, map) => this.layout.arrangeUnitsInArea(location.units, location.id));
+        }
     }
 
     onObjectSelected(event, intersection) {
