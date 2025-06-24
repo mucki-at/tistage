@@ -1,990 +1,33 @@
 {
-    "versionSchema": 2,
+    "versionSchema": 3,
     "lawsInPlay": [],
     "statTilePositions": {
-        "ghost": ["405", "404", "406"],
-        "argent": ["421", "420", "422"],
-        "saar": ["401", "402", "424"],
-        "muaat": ["413", "412", "414"],
-        "naalu": ["409", "410", "408"],
-        "naaz": ["417", "416", "418"]
+        "ghost": ["401", "402", "424"],
+        "jolnar": ["417", "416", "418"],
+        "arborec": ["405", "404", "406"],
+        "nekro": ["421", "420", "422"],
+        "xxcha": ["409", "410", "408"]
     },
-    "tileUnitData": {
-        "210": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "211": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "310": {
-            "space": {
-                "muaat": [
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 2,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "ws",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "muaat": {
-                    "controlledBy": "muaat",
-                    "entities": {
-                        "muaat": [
-                            {
-                                "entityId": "sd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 2,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        },
-        "212": {
-            "space": {
-                "argent": [
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "primor": {
-                    "controlledBy": "argent",
-                    "entities": {
-                        "argent": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "mf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["argent"]
-        },
-        "311": {
-            "space": {
-                "muaat": [
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "gral": {
-                    "controlledBy": "muaat",
-                    "entities": {
-                        "muaat": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "centauri": {
-                    "controlledBy": "muaat",
-                    "entities": {
-                        "muaat": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 2,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["muaat"]
-        },
-        "312": {
-            "space": {},
-            "planets": {
-                "bakal": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "alioprima": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "313": {
-            "space": {
-                "naaz": [
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "naazir": {
-                    "controlledBy": "naaz",
-                    "entities": {
-                        "naaz": [
-                            {
-                                "entityId": "sd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 3,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "rokha": {
-                    "controlledBy": "naaz",
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "314": {
-            "space": {
-                "naaz": [
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "ang": {
-                    "controlledBy": "naaz",
-                    "entities": {
-                        "neutral": [
-                            {
-                                "entityId": "cyberneticstat",
-                                "entityType": "attachment",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ],
-                        "naaz": [
-                            {
-                                "entityId": "mf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["naaz"]
-        },
-        "315": {
-            "space": {},
-            "planets": {
-                "qucenn": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "rarron": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "316": {
-            "space": {
-                "argent": [
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 2,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "ylir": {
-                    "controlledBy": "argent",
-                    "entities": {
-                        "argent": [
-                            {
-                                "entityId": "pd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "avar": {
-                    "controlledBy": "argent",
-                    "entities": {
-                        "argent": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "valk": {
-                    "controlledBy": "argent",
-                    "entities": {
-                        "argent": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 3,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "sd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        },
-        "317": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "318": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "000": {
-            "space": {},
-            "planets": {
-                "mr": {
-                    "controlledBy": null,
-                    "entities": {
-                        "neutral": [
-                            {
-                                "entityId": "custodian",
-                                "entityType": "token",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        },
-        "101": {
-            "space": {},
-            "planets": {
-                "perimeter": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "102": {
-            "space": {},
-            "planets": {
-                "lodor": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "201": {
-            "space": {},
-            "planets": {
-                "arnor": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "lor": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "103": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "202": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "301": {
-            "space": {
-                "saar": [
-                    {
-                        "entityId": "ca",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "gf",
-                        "entityType": "unit",
-                        "count": 2,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 2,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "sd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "lisisii": {
-                    "controlledBy": "saar",
-                    "entities": {}
-                },
-                "ragh": {
-                    "controlledBy": "saar",
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "104": {
-            "space": {},
-            "planets": {
-                "cormund": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "203": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "302": {
-            "space": {
-                "saar": [
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "tequran": {
-                    "controlledBy": "saar",
-                    "entities": {}
-                },
-                "torkan": {
-                    "controlledBy": "saar",
-                    "entities": {
-                        "saar": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["saar"]
-        },
-        "105": {
-            "space": {},
-            "planets": {
-                "rigeli": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "rigelii": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "rigeliii": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "204": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "303": {
-            "space": {},
-            "planets": {
-                "saudor": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "106": {
-            "space": {
-                "argent": [
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "semlore": {
-                    "controlledBy": "argent",
-                    "entities": {
-                        "neutral": [
-                            {
-                                "entityId": "tombofemphidia",
-                                "entityType": "attachment",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ],
-                        "argent": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["argent"]
-        },
-        "205": {
-            "space": {},
-            "planets": {
-                "lisis": {
-                    "controlledBy": "naalu",
-                    "entities": {
-                        "neutral": [
-                            {
-                                "entityId": "biotic",
-                                "entityType": "attachment",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ],
-                        "naalu": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "velnor": {
-                    "controlledBy": "naalu",
-                    "entities": {
-                        "naalu": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        },
-        "304": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "206": {
-            "space": {},
-            "planets": {
-                "wellon": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "305": {
-            "space": {
-                "ghost": [
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "meer": {
-                    "controlledBy": "ghost",
-                    "entities": {
-                        "ghost": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ],
-                        "neutral": [
-                            {
-                                "entityId": "warfarestat",
-                                "entityType": "attachment",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "arinam": {
-                    "controlledBy": "ghost",
-                    "entities": {
-                        "ghost": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["ghost"]
-        },
-        "tl": {
-            "space": {},
-            "planets": {
-                "lockedmallice": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "207": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "306": {
-            "space": {
-                "naalu": [
-                    {
-                        "entityId": "cv",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "everra": {
-                    "controlledBy": "naalu",
-                    "entities": {
-                        "naalu": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 2,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": ["naalu"]
-        },
-        "208": {
-            "space": {},
-            "planets": {
-                "cealdri": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "xanhact": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "307": {
-            "space": {
-                "naalu": [
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 3,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "ca",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "druaa": {
-                    "controlledBy": "naalu",
-                    "entities": {
-                        "naalu": [
-                            {
-                                "entityId": "sd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                },
-                "maaluuk": {
-                    "controlledBy": "naalu",
-                    "entities": {
-                        "naalu": [
-                            {
-                                "entityId": "pd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        },
-        "209": {
-            "space": {
-                "neutral": [
-                    {
-                        "entityId": "frontier",
-                        "entityType": "token",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {},
-            "ccs": []
-        },
-        "308": {
-            "space": {},
-            "planets": {
-                "corneeq": {
-                    "controlledBy": null,
-                    "entities": {}
-                },
-                "resculon": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "309": {
-            "space": {},
-            "planets": {
-                "vorhal": {
-                    "controlledBy": null,
-                    "entities": {}
-                }
-            },
-            "ccs": []
-        },
-        "tr": {
-            "space": {
-                "ghost": [
-                    {
-                        "entityId": "ff",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    },
-                    {
-                        "entityId": "dd",
-                        "entityType": "unit",
-                        "count": 1,
-                        "sustained": null
-                    }
-                ]
-            },
-            "planets": {
-                "creuss": {
-                    "controlledBy": "ghost",
-                    "entities": {
-                        "ghost": [
-                            {
-                                "entityId": "gf",
-                                "entityType": "unit",
-                                "count": 2,
-                                "sustained": null
-                            },
-                            {
-                                "entityId": "sd",
-                                "entityType": "unit",
-                                "count": 1,
-                                "sustained": null
-                            }
-                        ]
-                    }
-                }
-            },
-            "ccs": []
-        }
-    },
-    "ringCount": 3,
     "strategyCards": [
         {
             "initiative": 1,
             "name": "Leadership",
             "id": "pok1leadership",
-            "picked": true,
+            "picked": false,
             "played": false,
             "exhausted": false,
-            "tradeGoods": 0,
-            "pickedByFaction": "naalu"
+            "tradeGoods": 1,
+            "pickedByFaction": null
         },
         {
             "initiative": 2,
             "name": "Diplomacy",
             "id": "pok2diplomacy",
             "picked": true,
-            "played": false,
+            "played": true,
             "exhausted": false,
             "tradeGoods": 0,
-            "pickedByFaction": "argent"
+            "pickedByFaction": "xxcha"
         },
         {
             "initiative": 3,
@@ -994,7 +37,7 @@
             "played": false,
             "exhausted": false,
             "tradeGoods": 0,
-            "pickedByFaction": "muaat"
+            "pickedByFaction": "nekro"
         },
         {
             "initiative": 4,
@@ -1004,7 +47,7 @@
             "played": false,
             "exhausted": false,
             "tradeGoods": 0,
-            "pickedByFaction": "naaz"
+            "pickedByFaction": "arborec"
         },
         {
             "initiative": 5,
@@ -1014,7 +57,7 @@
             "played": false,
             "exhausted": false,
             "tradeGoods": 0,
-            "pickedByFaction": "saar"
+            "pickedByFaction": "ghost"
         },
         {
             "initiative": 6,
@@ -1034,7 +77,7 @@
             "played": false,
             "exhausted": false,
             "tradeGoods": 0,
-            "pickedByFaction": "ghost"
+            "pickedByFaction": "jolnar"
         },
         {
             "initiative": 8,
@@ -1047,229 +90,22 @@
             "pickedByFaction": null
         }
     ],
-    "objectives": {
-        "stage1Objectives": [
-            {
-                "key": "amass_wealth",
-                "name": "Amass Wealth",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "monument",
-                "name": "Erect a Monument",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_1260",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_8211",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_2649",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            }
-        ],
-        "stage2Objectives": [
-            {
-                "key": "UNREVEALED_3157",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_4131",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_9684",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_5402",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_1186",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            }
-        ],
-        "customObjectives": [
-            {
-                "key": "Custodian/Imperial",
-                "name": "Custodian/Imperial",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": true
-            }
-        ],
-        "allObjectives": [
-            {
-                "key": "amass_wealth",
-                "name": "Amass Wealth",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "monument",
-                "name": "Erect a Monument",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_1260",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_8211",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_2649",
-                "name": "UNREVEALED",
-                "pointValue": 1,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_3157",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_4131",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_9684",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_5402",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "UNREVEALED_1186",
-                "name": "UNREVEALED",
-                "pointValue": 2,
-                "revealed": false,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": false
-            },
-            {
-                "key": "Custodian/Imperial",
-                "name": "Custodian/Imperial",
-                "pointValue": 1,
-                "revealed": true,
-                "scoredFactions": [],
-                "peekingFactions": [],
-                "multiScoring": true
-            }
-        ]
-    },
+    "gameCustomName": "Equi this, equi that",
     "cardPool": {
-        "secretObjectiveDeckSize": 34,
+        "secretObjectiveDeckSize": 35,
         "secretObjectiveFullDeckSize": 40,
         "actionCardDeckSize": 120,
         "actionCardFullDeckSize": 120,
         "actionCardDiscardSize": 0,
         "actionCardPurgedSize": 0,
-        "culturalExploreDeckSize": 15,
-        "culturalExploreDiscardSize": 2,
+        "culturalExploreDeckSize": 14,
+        "culturalExploreDiscardSize": 1,
         "culturalExploreFullDeckSize": 20,
-        "industrialExploreDeckSize": 12,
-        "industrialExploreDiscardSize": 4,
+        "industrialExploreDeckSize": 20,
+        "industrialExploreDiscardSize": 0,
         "industrialExploreFullDeckSize": 20,
-        "hazardousExploreDeckSize": 18,
-        "hazardousExploreDiscardSize": 1,
+        "hazardousExploreDeckSize": 14,
+        "hazardousExploreDiscardSize": 2,
         "hazardousExploreFullDeckSize": 20,
         "frontierExploreDeckSize": 20,
         "frontierExploreDiscardSize": 0,
@@ -1280,208 +116,34 @@
         "agendaFullDeckSize": 50,
         "agendaDiscardSize": 0
     },
-    "vpsToWin": 10,
     "playerData": [
         {
-            "userName": "JoJoshia",
-            "faction": "saar",
-            "color": "green",
-            "displayName": "null",
-            "passed": false,
-            "eliminated": false,
-            "active": false,
-            "tacticalCC": 2,
-            "fleetCC": 3,
-            "strategicCC": 2,
-            "tg": 2,
-            "commodities": 0,
-            "commoditiesTotal": 3,
-            "resources": 5,
-            "influence": 1,
-            "totResources": 5,
-            "totInfluence": 4,
-            "optimalResources": 5,
-            "optimalInfluence": 0,
-            "flexValue": 0,
-            "totOptimalResources": 5,
-            "totOptimalInfluence": 3,
-            "totFlexValue": 0,
-            "crf": 1,
-            "hrf": 0,
-            "irf": 0,
-            "urf": 0,
-            "stasisInfantry": 0,
-            "actualHits": 0,
-            "expectedHitsTimes10": 0,
-            "unitsOwned": [
-                "carrier",
-                "saar_spacedock",
-                "saar_flagship",
-                "fighter",
-                "dreadnought",
-                "destroyer",
-                "infantry",
-                "cruiser",
-                "pds",
-                "saar_mech"
-            ],
-            "followedSCs": [],
-            "unfollowedSCs": [],
-            "exhaustedSCs": [],
-            "promissoryNotesInPlayArea": [],
-            "techs": ["amd"],
-            "exhaustedTechs": [],
-            "factionTechs": ["ffac2", "cm"],
-            "notResearchedFactionTechs": ["ffac2", "cm"],
-            "planets": ["ragh", "lisisii", "tequran", "torkan"],
-            "exhaustedPlanets": ["torkan"],
-            "exhaustedPlanetAbilities": [],
-            "fragments": ["crf9"],
-            "relics": [],
-            "exhaustedRelics": [],
-            "leaders": [
-                {
-                    "id": "saaragent",
-                    "type": "agent",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": false,
-                    "active": false
-                },
-                {
-                    "id": "saarcommander",
-                    "type": "commander",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                },
-                {
-                    "id": "saarhero",
-                    "type": "hero",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                }
-            ],
-            "leaderIDs": ["saaragent", "saarcommander", "saarhero"],
-            "secretsScored": {},
-            "numUnscoredSecrets": 1,
-            "flexibleDisplayName": "Saar",
-            "scs": [5],
-            "isSpeaker": true,
-            "neighbors": [],
-            "spaceArmyRes": 9.0,
-            "groundArmyRes": 1.5,
-            "spaceArmyHealth": 5.0,
-            "groundArmyHealth": 3.0,
-            "spaceArmyCombat": 1.2,
-            "groundArmyCombat": 0.9,
-            "soCount": 1,
-            "acCount": 0,
-            "pnCount": 6,
-            "totalVps": 0,
-            "numScoreableSecrets": 3,
-            "unitCounts": {
-                "dd": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "ff": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "dn": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "plenaryorbital": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "monument": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "fs": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "sd": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "cavalry": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "cv": {
-                    "unitCap": 0,
-                    "deployedCount": 2
-                },
-                "pd": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "lady": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "mf": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "ws": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "ca": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "gf": {
-                    "unitCap": 0,
-                    "deployedCount": 2
-                },
-                "tyrantslament": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                }
-            },
-            "nombox": {},
-            "sleeperTokensReinf": 0,
-            "ghostWormholesReinf": [],
-            "mahactEdict": [],
-            "debtTokens": {}
-        },
-        {
-            "userName": "Forlorn Ranger",
+            "userName": "sassas",
             "faction": "ghost",
-            "color": "pink",
+            "color": "yellow",
             "displayName": "null",
             "passed": false,
             "eliminated": false,
-            "active": false,
+            "active": true,
             "tacticalCC": 2,
             "fleetCC": 3,
-            "strategicCC": 2,
-            "tg": 1,
+            "strategicCC": 1,
+            "tg": 0,
             "commodities": 0,
             "commoditiesTotal": 4,
-            "resources": 4,
-            "influence": 2,
-            "totResources": 6,
-            "totInfluence": 9,
-            "optimalResources": 4,
-            "optimalInfluence": 0,
+            "resources": 7,
+            "influence": 4,
+            "totResources": 8,
+            "totInfluence": 4,
+            "optimalResources": 6,
+            "optimalInfluence": 2,
             "flexValue": 0,
-            "totOptimalResources": 4,
-            "totOptimalInfluence": 7,
+            "totOptimalResources": 7,
+            "totOptimalInfluence": 2,
             "totFlexValue": 0,
-            "crf": 0,
-            "hrf": 0,
-            "irf": 1,
+            "crf": 2,
+            "hrf": 1,
+            "irf": 0,
             "urf": 0,
             "stasisInfantry": 0,
             "actualHits": 0,
@@ -1498,7 +160,7 @@
                 "ghost_flagship",
                 "pds"
             ],
-            "followedSCs": [],
+            "followedSCs": [2],
             "unfollowedSCs": [],
             "exhaustedSCs": [],
             "promissoryNotesInPlayArea": [],
@@ -1506,10 +168,10 @@
             "exhaustedTechs": [],
             "factionTechs": ["ds", "wg"],
             "notResearchedFactionTechs": ["ds", "wg"],
-            "planets": ["creuss", "meer", "arinam"],
-            "exhaustedPlanets": ["meer", "arinam"],
+            "planets": ["creuss", "loki", "abaddon", "ashtroth"],
+            "exhaustedPlanets": ["abaddon"],
             "exhaustedPlanetAbilities": [],
-            "fragments": ["irf2"],
+            "fragments": ["crf3", "crf1", "hrf3"],
             "relics": [],
             "exhaustedRelics": [],
             "leaders": [
@@ -1542,9 +204,9 @@
             "secretsScored": {},
             "numUnscoredSecrets": 1,
             "flexibleDisplayName": "Ghost",
-            "scs": [7],
-            "isSpeaker": false,
-            "neighbors": ["red"],
+            "scs": [5],
+            "isSpeaker": true,
+            "neighbors": [],
             "spaceArmyRes": 6.0,
             "groundArmyRes": 2.0,
             "spaceArmyHealth": 5.0,
@@ -1615,7 +277,7 @@
                 },
                 "gf": {
                     "unitCap": 0,
-                    "deployedCount": 3
+                    "deployedCount": 4
                 },
                 "tyrantslament": {
                     "unitCap": 0,
@@ -1626,33 +288,34 @@
             "sleeperTokensReinf": 0,
             "ghostWormholesReinf": ["creussalpha", "creussbeta", "creussgamma"],
             "mahactEdict": [],
-            "debtTokens": {}
+            "debtTokens": {},
+            "abilities": ["slipstream", "creuss_gate", "quantum_entanglement"]
         },
         {
-            "userName": "jonkwell",
-            "faction": "naalu",
-            "color": "red",
+            "userName": "Eloel",
+            "faction": "arborec",
+            "color": "forest",
             "displayName": "null",
             "passed": false,
             "eliminated": false,
             "active": false,
             "tacticalCC": 2,
             "fleetCC": 3,
-            "strategicCC": 2,
+            "strategicCC": 1,
             "tg": 0,
             "commodities": 0,
             "commoditiesTotal": 3,
-            "resources": 3,
-            "influence": 3,
-            "totResources": 10,
+            "resources": 8,
+            "influence": 7,
+            "totResources": 8,
             "totInfluence": 7,
             "optimalResources": 3,
-            "optimalInfluence": 2,
-            "flexValue": 0,
-            "totOptimalResources": 8,
-            "totOptimalInfluence": 2,
-            "totFlexValue": 2,
-            "crf": 1,
+            "optimalInfluence": 0,
+            "flexValue": 5,
+            "totOptimalResources": 3,
+            "totOptimalInfluence": 0,
+            "totFlexValue": 5,
+            "crf": 0,
             "hrf": 0,
             "irf": 0,
             "urf": 0,
@@ -1661,33 +324,33 @@
             "expectedHitsTimes10": 0,
             "unitsOwned": [
                 "carrier",
-                "naalu_flagship",
+                "arborec_mech",
                 "spacedock",
+                "arborec_flagship",
+                "fighter",
                 "dreadnought",
-                "naalu_mech_omega",
                 "destroyer",
-                "infantry",
-                "naalu_fighter",
                 "cruiser",
-                "pds"
+                "pds",
+                "arborec_infantry"
             ],
-            "followedSCs": [],
+            "followedSCs": [2],
             "unfollowedSCs": [],
             "exhaustedSCs": [],
             "promissoryNotesInPlayArea": [],
-            "techs": ["st", "nm"],
+            "techs": ["md"],
             "exhaustedTechs": [],
-            "factionTechs": ["ng", "hcf2"],
-            "notResearchedFactionTechs": ["ng", "hcf2"],
-            "planets": ["maaluuk", "druaa", "lisis", "velnor", "everra"],
-            "exhaustedPlanets": ["lisis", "velnor", "everra"],
+            "factionTechs": ["bio", "lw2"],
+            "notResearchedFactionTechs": ["bio", "lw2"],
+            "planets": ["nestphar", "siig", "kraag"],
+            "exhaustedPlanets": [],
             "exhaustedPlanetAbilities": [],
-            "fragments": ["crf6"],
+            "fragments": [],
             "relics": [],
             "exhaustedRelics": [],
             "leaders": [
                 {
-                    "id": "naaluagent",
+                    "id": "arborecagent",
                     "type": "agent",
                     "tgCount": 0,
                     "exhausted": true,
@@ -1695,7 +358,7 @@
                     "active": false
                 },
                 {
-                    "id": "naalucommander",
+                    "id": "arboreccommander",
                     "type": "commander",
                     "tgCount": 0,
                     "exhausted": false,
@@ -1703,7 +366,7 @@
                     "active": false
                 },
                 {
-                    "id": "naaluhero",
+                    "id": "arborechero",
                     "type": "hero",
                     "tgCount": 0,
                     "exhausted": false,
@@ -1711,18 +374,18 @@
                     "active": false
                 }
             ],
-            "leaderIDs": ["naaluagent", "naalucommander", "naaluhero"],
+            "leaderIDs": ["arborecagent", "arboreccommander", "arborechero"],
             "secretsScored": {},
             "numUnscoredSecrets": 1,
-            "flexibleDisplayName": "Naalu",
-            "scs": [1],
+            "flexibleDisplayName": "Arborec",
+            "scs": [4],
             "isSpeaker": false,
-            "neighbors": ["pink"],
-            "spaceArmyRes": 7.5,
+            "neighbors": ["blue"],
+            "spaceArmyRes": 7.0,
             "groundArmyRes": 2.0,
-            "spaceArmyHealth": 6.0,
+            "spaceArmyHealth": 4.0,
             "groundArmyHealth": 4.0,
-            "spaceArmyCombat": 1.7,
+            "spaceArmyCombat": 0.8,
             "groundArmyCombat": 1.2,
             "soCount": 1,
             "acCount": 0,
@@ -1732,7 +395,7 @@
             "unitCounts": {
                 "dd": {
                     "unitCap": 0,
-                    "deployedCount": 1
+                    "deployedCount": 0
                 },
                 "ff": {
                     "unitCap": 0,
@@ -1764,7 +427,7 @@
                 },
                 "cv": {
                     "unitCap": 0,
-                    "deployedCount": 1
+                    "deployedCount": 2
                 },
                 "pd": {
                     "unitCap": 0,
@@ -1784,7 +447,7 @@
                 },
                 "ca": {
                     "unitCap": 0,
-                    "deployedCount": 1
+                    "deployedCount": 0
                 },
                 "gf": {
                     "unitCap": 0,
@@ -1799,13 +462,12 @@
             "sleeperTokensReinf": 0,
             "ghostWormholesReinf": [],
             "mahactEdict": [],
-            "debtTokens": {
-                "pink": 1
-            }
+            "debtTokens": {},
+            "abilities": ["mitosis"]
         },
         {
-            "userName": "sassas",
-            "faction": "muaat",
+            "userName": "Arko",
+            "faction": "xxcha",
             "color": "blue",
             "displayName": "null",
             "passed": false,
@@ -1814,366 +476,18 @@
             "tacticalCC": 2,
             "fleetCC": 3,
             "strategicCC": 2,
-            "tg": 0,
-            "commodities": 2,
+            "tg": 1,
+            "commodities": 0,
             "commoditiesTotal": 4,
-            "resources": 0,
-            "influence": 0,
+            "resources": 3,
+            "influence": 7,
             "totResources": 6,
-            "totInfluence": 5,
+            "totInfluence": 10,
             "optimalResources": 0,
-            "optimalInfluence": 0,
-            "flexValue": 0,
-            "totOptimalResources": 4,
-            "totOptimalInfluence": 3,
-            "totFlexValue": 1,
-            "crf": 0,
-            "hrf": 0,
-            "irf": 0,
-            "urf": 0,
-            "stasisInfantry": 0,
-            "actualHits": 0,
-            "expectedHitsTimes10": 0,
-            "unitsOwned": [
-                "carrier",
-                "spacedock",
-                "muaat_warsun",
-                "fighter",
-                "dreadnought",
-                "muaat_mech",
-                "destroyer",
-                "infantry",
-                "cruiser",
-                "pds",
-                "muaat_flagship"
-            ],
-            "followedSCs": [],
-            "unfollowedSCs": [],
-            "exhaustedSCs": [],
-            "promissoryNotesInPlayArea": [],
-            "techs": ["ps"],
-            "exhaustedTechs": [],
-            "factionTechs": ["pws2", "mr"],
-            "notResearchedFactionTechs": ["pws2", "mr"],
-            "planets": ["muaat", "gral", "centauri"],
-            "exhaustedPlanets": ["muaat", "gral", "centauri"],
-            "exhaustedPlanetAbilities": [],
-            "fragments": [],
-            "relics": [],
-            "exhaustedRelics": [],
-            "leaders": [
-                {
-                    "id": "muaatagent",
-                    "type": "agent",
-                    "tgCount": 0,
-                    "exhausted": true,
-                    "locked": false,
-                    "active": false
-                },
-                {
-                    "id": "muaatcommander",
-                    "type": "commander",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                },
-                {
-                    "id": "muaathero",
-                    "type": "hero",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                }
-            ],
-            "leaderIDs": ["muaatagent", "muaatcommander", "muaathero"],
-            "secretsScored": {},
-            "numUnscoredSecrets": 1,
-            "flexibleDisplayName": "Muaat",
-            "scs": [3],
-            "isSpeaker": false,
-            "neighbors": [],
-            "spaceArmyRes": 17.0,
-            "groundArmyRes": 2.5,
-            "spaceArmyHealth": 6.0,
-            "groundArmyHealth": 5.0,
-            "spaceArmyCombat": 3.2,
-            "groundArmyCombat": 1.5,
-            "soCount": 1,
-            "acCount": 0,
-            "pnCount": 6,
-            "totalVps": 0,
-            "numScoreableSecrets": 3,
-            "unitCounts": {
-                "dd": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "ff": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "dn": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "plenaryorbital": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "monument": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "fs": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "sd": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "cavalry": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "cv": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "pd": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "lady": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "mf": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "ws": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "ca": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "gf": {
-                    "unitCap": 0,
-                    "deployedCount": 3
-                },
-                "tyrantslament": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                }
-            },
-            "nombox": {},
-            "sleeperTokensReinf": 0,
-            "ghostWormholesReinf": [],
-            "mahactEdict": [],
-            "debtTokens": {}
-        },
-        {
-            "userName": "Arko",
-            "faction": "naaz",
-            "color": "turquoise",
-            "displayName": "null",
-            "passed": false,
-            "eliminated": false,
-            "active": true,
-            "tacticalCC": 2,
-            "fleetCC": 3,
-            "strategicCC": 2,
-            "tg": 0,
-            "commodities": 0,
-            "commoditiesTotal": 3,
-            "resources": 3,
-            "influence": 3,
-            "totResources": 6,
-            "totInfluence": 4,
-            "optimalResources": 2,
-            "optimalInfluence": 2,
-            "flexValue": 0,
-            "totOptimalResources": 5,
-            "totOptimalInfluence": 2,
-            "totFlexValue": 0,
-            "crf": 0,
-            "hrf": 0,
-            "irf": 1,
-            "urf": 0,
-            "stasisInfantry": 0,
-            "actualHits": 0,
-            "expectedHitsTimes10": 0,
-            "unitsOwned": [
-                "carrier",
-                "naaz_flagship",
-                "naaz_mech",
-                "naaz_mech_space",
-                "spacedock",
-                "fighter",
-                "dreadnought",
-                "destroyer",
-                "infantry",
-                "cruiser",
-                "pds"
-            ],
-            "followedSCs": [],
-            "unfollowedSCs": [],
-            "exhaustedSCs": [],
-            "promissoryNotesInPlayArea": [],
-            "techs": ["pa", "aida"],
-            "exhaustedTechs": [],
-            "factionTechs": ["pfa", "sc"],
-            "notResearchedFactionTechs": ["pfa", "sc"],
-            "planets": ["naazir", "rokha", "ang"],
-            "exhaustedPlanets": ["ang"],
-            "exhaustedPlanetAbilities": [],
-            "fragments": ["irf3"],
-            "relics": [],
-            "exhaustedRelics": [],
-            "leaders": [
-                {
-                    "id": "naazagent",
-                    "type": "agent",
-                    "tgCount": 0,
-                    "exhausted": true,
-                    "locked": false,
-                    "active": false
-                },
-                {
-                    "id": "naazcommander",
-                    "type": "commander",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                },
-                {
-                    "id": "naazhero",
-                    "type": "hero",
-                    "tgCount": 0,
-                    "exhausted": false,
-                    "locked": true,
-                    "active": false
-                }
-            ],
-            "leaderIDs": ["naazagent", "naazcommander", "naazhero"],
-            "secretsScored": {},
-            "numUnscoredSecrets": 1,
-            "flexibleDisplayName": "Naaz",
-            "scs": [4],
-            "isSpeaker": false,
-            "neighbors": [],
-            "spaceArmyRes": 8.0,
-            "groundArmyRes": 3.5,
-            "spaceArmyHealth": 5.0,
-            "groundArmyHealth": 5.0,
-            "spaceArmyCombat": 1.0,
-            "groundArmyCombat": 1.9,
-            "soCount": 1,
-            "acCount": 0,
-            "pnCount": 6,
-            "totalVps": 0,
-            "numScoreableSecrets": 3,
-            "unitCounts": {
-                "dd": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "ff": {
-                    "unitCap": 0,
-                    "deployedCount": 2
-                },
-                "dn": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "plenaryorbital": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "monument": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "fs": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "sd": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "cavalry": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "cv": {
-                    "unitCap": 0,
-                    "deployedCount": 2
-                },
-                "pd": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "lady": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "mf": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "ws": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "ca": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                },
-                "gf": {
-                    "unitCap": 0,
-                    "deployedCount": 1
-                },
-                "tyrantslament": {
-                    "unitCap": 0,
-                    "deployedCount": 0
-                }
-            },
-            "nombox": {},
-            "sleeperTokensReinf": 0,
-            "ghostWormholesReinf": [],
-            "mahactEdict": [],
-            "debtTokens": {}
-        },
-        {
-            "userName": "Eloel",
-            "faction": "argent",
-            "color": "splitorange",
-            "displayName": "null",
-            "passed": false,
-            "eliminated": false,
-            "active": false,
-            "tacticalCC": 1,
-            "fleetCC": 3,
-            "strategicCC": 2,
-            "tg": 0,
-            "commodities": 0,
-            "commoditiesTotal": 3,
-            "resources": 3,
-            "influence": 1,
-            "totResources": 8,
-            "totInfluence": 7,
-            "optimalResources": 2,
-            "optimalInfluence": 0,
+            "optimalInfluence": 6,
             "flexValue": 1,
-            "totOptimalResources": 4,
-            "totOptimalInfluence": 2,
+            "totOptimalResources": 0,
+            "totOptimalInfluence": 6,
             "totFlexValue": 4,
             "crf": 0,
             "hrf": 0,
@@ -2183,34 +497,40 @@
             "actualHits": 0,
             "expectedHitsTimes10": 0,
             "unitsOwned": [
+                "xxcha_mech",
                 "carrier",
-                "argent_flagship",
                 "spacedock",
-                "argent_destroyer",
                 "fighter",
                 "dreadnought",
+                "destroyer",
                 "infantry",
+                "xxcha_flagship",
                 "cruiser",
-                "pds",
-                "argent_mech"
+                "pds"
             ],
-            "followedSCs": [],
+            "followedSCs": [2],
             "unfollowedSCs": [],
-            "exhaustedSCs": [],
+            "exhaustedSCs": [2],
             "promissoryNotesInPlayArea": [],
-            "techs": ["ps", "st"],
+            "techs": ["gls"],
             "exhaustedTechs": [],
-            "factionTechs": ["ah", "swa2"],
-            "notResearchedFactionTechs": ["ah", "swa2"],
-            "planets": ["valk", "ylir", "avar", "primor", "semlore"],
-            "exhaustedPlanets": ["primor", "ylir", "semlore"],
-            "exhaustedPlanetAbilities": ["primor"],
+            "factionTechs": ["it", "nf"],
+            "notResearchedFactionTechs": ["it", "nf"],
+            "planets": [
+                "archonren",
+                "archontau",
+                "cealdri",
+                "xanhact",
+                "everra"
+            ],
+            "exhaustedPlanets": ["everra"],
+            "exhaustedPlanetAbilities": [],
             "fragments": [],
             "relics": [],
             "exhaustedRelics": [],
             "leaders": [
                 {
-                    "id": "argentagent",
+                    "id": "xxchaagent",
                     "type": "agent",
                     "tgCount": 0,
                     "exhausted": false,
@@ -2218,7 +538,7 @@
                     "active": false
                 },
                 {
-                    "id": "argentcommander",
+                    "id": "xxchacommander",
                     "type": "commander",
                     "tgCount": 0,
                     "exhausted": false,
@@ -2226,7 +546,7 @@
                     "active": false
                 },
                 {
-                    "id": "argenthero",
+                    "id": "xxchahero",
                     "type": "hero",
                     "tgCount": 0,
                     "exhausted": false,
@@ -2234,19 +554,19 @@
                     "active": false
                 }
             ],
-            "leaderIDs": ["argentagent", "argentcommander", "argenthero"],
+            "leaderIDs": ["xxchaagent", "xxchacommander", "xxchahero"],
             "secretsScored": {},
             "numUnscoredSecrets": 1,
-            "flexibleDisplayName": "Argent",
+            "flexibleDisplayName": "Xxcha",
             "scs": [2],
             "isSpeaker": false,
-            "neighbors": [],
-            "spaceArmyRes": 6.0,
-            "groundArmyRes": 5.5,
-            "spaceArmyHealth": 5.0,
-            "groundArmyHealth": 9.0,
-            "spaceArmyCombat": 1.2,
-            "groundArmyCombat": 2.6,
+            "neighbors": ["forest"],
+            "spaceArmyRes": 8.5,
+            "groundArmyRes": 1.5,
+            "spaceArmyHealth": 6.0,
+            "groundArmyHealth": 3.0,
+            "spaceArmyCombat": 1.6,
+            "groundArmyCombat": 0.9,
             "soCount": 1,
             "acCount": 0,
             "pnCount": 6,
@@ -2255,11 +575,11 @@
             "unitCounts": {
                 "dd": {
                     "unitCap": 0,
-                    "deployedCount": 2
+                    "deployedCount": 0
                 },
                 "ff": {
                     "unitCap": 0,
-                    "deployedCount": 1
+                    "deployedCount": 2
                 },
                 "dn": {
                     "unitCap": 0,
@@ -2299,7 +619,181 @@
                 },
                 "mf": {
                     "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ws": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ca": {
+                    "unitCap": 0,
+                    "deployedCount": 2
+                },
+                "gf": {
+                    "unitCap": 0,
+                    "deployedCount": 3
+                },
+                "tyrantslament": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                }
+            },
+            "nombox": {},
+            "sleeperTokensReinf": 0,
+            "ghostWormholesReinf": [],
+            "mahactEdict": [],
+            "debtTokens": {},
+            "abilities": ["peace_accords", "quash"]
+        },
+        {
+            "userName": "mucki",
+            "faction": "jolnar",
+            "color": "orange",
+            "displayName": "null",
+            "passed": false,
+            "eliminated": false,
+            "active": false,
+            "tacticalCC": 2,
+            "fleetCC": 3,
+            "strategicCC": 1,
+            "tg": 0,
+            "commodities": 0,
+            "commoditiesTotal": 4,
+            "resources": 6,
+            "influence": 6,
+            "totResources": 6,
+            "totInfluence": 6,
+            "optimalResources": 3,
+            "optimalInfluence": 5,
+            "flexValue": 0,
+            "totOptimalResources": 3,
+            "totOptimalInfluence": 5,
+            "totFlexValue": 0,
+            "crf": 0,
+            "hrf": 0,
+            "irf": 0,
+            "urf": 0,
+            "stasisInfantry": 0,
+            "actualHits": 0,
+            "expectedHitsTimes10": 0,
+            "unitsOwned": [
+                "carrier",
+                "spacedock",
+                "jolnar_mech",
+                "fighter",
+                "dreadnought",
+                "destroyer",
+                "infantry",
+                "cruiser",
+                "jolnar_flagship",
+                "pds"
+            ],
+            "followedSCs": [2],
+            "unfollowedSCs": [],
+            "exhaustedSCs": [],
+            "promissoryNotesInPlayArea": [],
+            "techs": ["amd", "st", "nm", "ps"],
+            "exhaustedTechs": [],
+            "factionTechs": ["ers", "scc"],
+            "notResearchedFactionTechs": ["ers", "scc"],
+            "planets": ["jol", "nar", "lodor"],
+            "exhaustedPlanets": [],
+            "exhaustedPlanetAbilities": [],
+            "fragments": [],
+            "relics": [],
+            "exhaustedRelics": [],
+            "leaders": [
+                {
+                    "id": "jolnaragent",
+                    "type": "agent",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": false,
+                    "active": false
+                },
+                {
+                    "id": "jolnarcommander",
+                    "type": "commander",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": true,
+                    "active": false
+                },
+                {
+                    "id": "jolnarhero",
+                    "type": "hero",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": true,
+                    "active": false
+                }
+            ],
+            "leaderIDs": ["jolnaragent", "jolnarcommander", "jolnarhero"],
+            "secretsScored": {},
+            "numUnscoredSecrets": 1,
+            "flexibleDisplayName": "Jolnar",
+            "scs": [7],
+            "isSpeaker": false,
+            "neighbors": [],
+            "spaceArmyRes": 10.5,
+            "groundArmyRes": 1.0,
+            "spaceArmyHealth": 5.0,
+            "groundArmyHealth": 2.0,
+            "spaceArmyCombat": 0.8,
+            "groundArmyCombat": 0.4,
+            "soCount": 1,
+            "acCount": 0,
+            "pnCount": 6,
+            "totalVps": 0,
+            "numScoreableSecrets": 3,
+            "unitCounts": {
+                "dd": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ff": {
+                    "unitCap": 0,
                     "deployedCount": 1
+                },
+                "dn": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "plenaryorbital": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "monument": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "fs": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "sd": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "cavalry": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "cv": {
+                    "unitCap": 0,
+                    "deployedCount": 2
+                },
+                "pd": {
+                    "unitCap": 0,
+                    "deployedCount": 2
+                },
+                "lady": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "mf": {
+                    "unitCap": 0,
+                    "deployedCount": 0
                 },
                 "ws": {
                     "unitCap": 0,
@@ -2311,7 +805,7 @@
                 },
                 "gf": {
                     "unitCap": 0,
-                    "deployedCount": 5
+                    "deployedCount": 2
                 },
                 "tyrantslament": {
                     "unitCap": 0,
@@ -2322,47 +816,1400 @@
             "sleeperTokensReinf": 0,
             "ghostWormholesReinf": [],
             "mahactEdict": [],
-            "debtTokens": {}
+            "debtTokens": {},
+            "abilities": ["brilliant", "analytical", "fragile"]
+        },
+        {
+            "userName": "XiX LLAMA XiX",
+            "faction": "nekro",
+            "color": "splitred",
+            "displayName": "null",
+            "passed": false,
+            "eliminated": false,
+            "active": false,
+            "tacticalCC": 1,
+            "fleetCC": 3,
+            "strategicCC": 2,
+            "tg": 1,
+            "commodities": 0,
+            "commoditiesTotal": 3,
+            "resources": 4,
+            "influence": 0,
+            "totResources": 11,
+            "totInfluence": 6,
+            "optimalResources": 4,
+            "optimalInfluence": 0,
+            "flexValue": 0,
+            "totOptimalResources": 7,
+            "totOptimalInfluence": 3,
+            "totFlexValue": 2,
+            "crf": 0,
+            "hrf": 1,
+            "irf": 0,
+            "urf": 0,
+            "stasisInfantry": 0,
+            "actualHits": 0,
+            "expectedHitsTimes10": 0,
+            "unitsOwned": [
+                "nekro_mech",
+                "carrier",
+                "nekro_flagship",
+                "spacedock",
+                "fighter",
+                "dreadnought",
+                "destroyer",
+                "infantry",
+                "cruiser",
+                "pds"
+            ],
+            "followedSCs": [2],
+            "unfollowedSCs": [],
+            "exhaustedSCs": [],
+            "promissoryNotesInPlayArea": [],
+            "techs": ["dxa"],
+            "exhaustedTechs": [],
+            "factionTechs": ["vax", "vay"],
+            "notResearchedFactionTechs": ["vax", "vay"],
+            "planets": ["mordaiii", "primor", "bereg", "lirtaiv"],
+            "exhaustedPlanets": ["primor", "bereg", "lirtaiv"],
+            "exhaustedPlanetAbilities": ["primor"],
+            "fragments": ["hrf1"],
+            "relics": [],
+            "exhaustedRelics": [],
+            "leaders": [
+                {
+                    "id": "nekroagent",
+                    "type": "agent",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": false,
+                    "active": false
+                },
+                {
+                    "id": "nekrocommander",
+                    "type": "commander",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": true,
+                    "active": false
+                },
+                {
+                    "id": "nekrohero",
+                    "type": "hero",
+                    "tgCount": 0,
+                    "exhausted": false,
+                    "locked": true,
+                    "active": false
+                }
+            ],
+            "leaderIDs": ["nekroagent", "nekrocommander", "nekrohero"],
+            "secretsScored": {},
+            "numUnscoredSecrets": 1,
+            "flexibleDisplayName": "Nekro",
+            "scs": [3],
+            "isSpeaker": false,
+            "neighbors": [],
+            "spaceArmyRes": 10.0,
+            "groundArmyRes": 1.5,
+            "spaceArmyHealth": 6.0,
+            "groundArmyHealth": 3.0,
+            "spaceArmyCombat": 1.6,
+            "groundArmyCombat": 0.9,
+            "soCount": 1,
+            "acCount": 0,
+            "pnCount": 6,
+            "totalVps": 0,
+            "numScoreableSecrets": 3,
+            "unitCounts": {
+                "dd": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ff": {
+                    "unitCap": 0,
+                    "deployedCount": 2
+                },
+                "dn": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "plenaryorbital": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "monument": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "fs": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "sd": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "cavalry": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "cv": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "pd": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "lady": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "mf": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ws": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                },
+                "ca": {
+                    "unitCap": 0,
+                    "deployedCount": 1
+                },
+                "gf": {
+                    "unitCap": 0,
+                    "deployedCount": 3
+                },
+                "tyrantslament": {
+                    "unitCap": 0,
+                    "deployedCount": 0
+                }
+            },
+            "nombox": {},
+            "sleeperTokensReinf": 0,
+            "ghostWormholesReinf": [],
+            "mahactEdict": [],
+            "debtTokens": {},
+            "abilities": [
+                "technological_singularity",
+                "propagation",
+                "galactic_threat"
+            ]
         }
     ],
+    "gameRound": 1,
+    "gameName": "pbd11086",
+    "tileUnitData": {
+        "210": {
+            "space": {},
+            "planets": {
+                "vefutii": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "211": {
+            "space": {
+                "nekro": [
+                    {
+                        "entityId": "dn",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "primor": {
+                    "controlledBy": "nekro",
+                    "entities": {
+                        "neutral": [
+                            {
+                                "entityId": "tombofemphidia",
+                                "entityType": "attachment",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ],
+                        "nekro": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": ["nekro"],
+            "anomaly": false
+        },
+        "310": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "212": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": true
+        },
+        "311": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "312": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "313": {
+            "space": {
+                "jolnar": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "dn",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "jol": {
+                    "controlledBy": "jolnar",
+                    "entities": {
+                        "jolnar": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "pd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "nar": {
+                    "controlledBy": "jolnar",
+                    "entities": {
+                        "jolnar": [
+                            {
+                                "entityId": "sd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "pd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "314": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "315": {
+            "space": {},
+            "planets": {
+                "cormund": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": true
+        },
+        "316": {
+            "space": {
+                "nekro": [
+                    {
+                        "entityId": "ca",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "mordaiii": {
+                    "controlledBy": "nekro",
+                    "entities": {
+                        "nekro": [
+                            {
+                                "entityId": "sd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "317": {
+            "space": {
+                "nekro": [
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "lirtaiv": {
+                    "controlledBy": "nekro",
+                    "entities": {}
+                },
+                "bereg": {
+                    "controlledBy": "nekro",
+                    "entities": {
+                        "nekro": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": ["nekro"],
+            "anomaly": false
+        },
+        "318": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "000": {
+            "space": {},
+            "planets": {
+                "mr": {
+                    "controlledBy": null,
+                    "entities": {
+                        "neutral": [
+                            {
+                                "entityId": "custodian",
+                                "entityType": "token",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "101": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": true
+        },
+        "102": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "201": {
+            "space": {},
+            "planets": {
+                "corneeq": {
+                    "controlledBy": null,
+                    "entities": {}
+                },
+                "resculon": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "103": {
+            "space": {},
+            "planets": {
+                "tequran": {
+                    "controlledBy": null,
+                    "entities": {}
+                },
+                "torkan": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "202": {
+            "space": {
+                "ghost": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "dd",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "ashtroth": {
+                    "controlledBy": "ghost",
+                    "entities": {
+                        "ghost": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "abaddon": {
+                    "controlledBy": "ghost",
+                    "entities": {
+                        "ghost": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "loki": {
+                    "controlledBy": "ghost",
+                    "entities": {
+                        "ghost": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": ["ghost"],
+            "anomaly": false
+        },
+        "301": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "104": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "203": {
+            "space": {},
+            "planets": {
+                "vorhal": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "302": {
+            "space": {},
+            "planets": {
+                "thibah": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "105": {
+            "space": {},
+            "planets": {
+                "accoen": {
+                    "controlledBy": null,
+                    "entities": {}
+                },
+                "jeolir": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "204": {
+            "space": {},
+            "planets": {
+                "everra": {
+                    "controlledBy": "xxcha",
+                    "entities": {
+                        "neutral": [
+                            {
+                                "entityId": "paradiseworld",
+                                "entityType": "attachment",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": true
+        },
+        "303": {
+            "space": {},
+            "planets": {
+                "lisis": {
+                    "controlledBy": null,
+                    "entities": {}
+                },
+                "velnor": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "106": {
+            "space": {},
+            "planets": {
+                "wellon": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "205": {
+            "space": {},
+            "planets": {
+                "quann": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "304": {
+            "space": {
+                "arborec": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 2,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "nestphar": {
+                    "controlledBy": "arborec",
+                    "entities": {
+                        "arborec": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 2,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "sd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "pd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "206": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "305": {
+            "space": {
+                "arborec": [
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "siig": {
+                    "controlledBy": "arborec",
+                    "entities": {
+                        "neutral": [
+                            {
+                                "entityId": "miningworld",
+                                "entityType": "attachment",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ],
+                        "arborec": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "kraag": {
+                    "controlledBy": "arborec",
+                    "entities": {
+                        "neutral": [
+                            {
+                                "entityId": "lazaxsurvivors",
+                                "entityType": "attachment",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ],
+                        "arborec": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": ["arborec"],
+            "anomaly": false
+        },
+        "tl": {
+            "space": {},
+            "planets": {
+                "lockedmallice": {
+                    "controlledBy": null,
+                    "entities": {}
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "207": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "306": {
+            "space": {
+                "xxcha": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "cealdri": {
+                    "controlledBy": "xxcha",
+                    "entities": {
+                        "xxcha": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "xanhact": {
+                    "controlledBy": "xxcha",
+                    "entities": {}
+                }
+            },
+            "ccs": ["xxcha", "ghost", "arborec", "jolnar", "nekro"],
+            "anomaly": false
+        },
+        "208": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "307": {
+            "space": {
+                "xxcha": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 2,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "ca",
+                        "entityType": "unit",
+                        "count": 2,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "archonren": {
+                    "controlledBy": "xxcha",
+                    "entities": {
+                        "xxcha": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "sd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                },
+                "archontau": {
+                    "controlledBy": "xxcha",
+                    "entities": {
+                        "xxcha": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "pd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        },
+        "209": {
+            "space": {
+                "jolnar": [
+                    {
+                        "entityId": "cv",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ],
+                "neutral": [
+                    {
+                        "entityId": "gamma",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "lodor": {
+                    "controlledBy": "jolnar",
+                    "entities": {
+                        "jolnar": [
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": ["jolnar"],
+            "anomaly": false
+        },
+        "308": {
+            "space": {
+                "neutral": [
+                    {
+                        "entityId": "frontier",
+                        "entityType": "token",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {},
+            "ccs": [],
+            "anomaly": true
+        },
+        "309": {
+            "space": {},
+            "planets": {},
+            "ccs": [],
+            "anomaly": false
+        },
+        "tr": {
+            "space": {
+                "ghost": [
+                    {
+                        "entityId": "ff",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    },
+                    {
+                        "entityId": "dd",
+                        "entityType": "unit",
+                        "count": 1,
+                        "sustained": null
+                    }
+                ]
+            },
+            "planets": {
+                "creuss": {
+                    "controlledBy": "ghost",
+                    "entities": {
+                        "ghost": [
+                            {
+                                "entityId": "sd",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            },
+                            {
+                                "entityId": "gf",
+                                "entityType": "unit",
+                                "count": 1,
+                                "sustained": null
+                            }
+                        ]
+                    }
+                }
+            },
+            "ccs": [],
+            "anomaly": false
+        }
+    },
+    "ringCount": 3,
+    "objectives": {
+        "stage1Objectives": [
+            {
+                "key": "amass_wealth",
+                "name": "Amass Wealth",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 5,
+                    "jolnar": 6,
+                    "arborec": 6,
+                    "nekro": 4,
+                    "xxcha": 7
+                },
+                "progressThreshold": 9,
+                "multiScoring": false
+            },
+            {
+                "key": "build_defenses",
+                "name": "Build Defenses",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 1,
+                    "jolnar": 3,
+                    "arborec": 2,
+                    "nekro": 1,
+                    "xxcha": 2
+                },
+                "progressThreshold": 4,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_6249",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5983",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5375",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            }
+        ],
+        "stage2Objectives": [
+            {
+                "key": "UNREVEALED_8723",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_0552",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_8943",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5268",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5291",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            }
+        ],
+        "customObjectives": [
+            {
+                "key": "Custodian/Imperial",
+                "name": "Custodian/Imperial",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 0,
+                    "jolnar": 0,
+                    "arborec": 0,
+                    "nekro": 0,
+                    "xxcha": 0
+                },
+                "progressThreshold": 0,
+                "multiScoring": true
+            }
+        ],
+        "allObjectives": [
+            {
+                "key": "amass_wealth",
+                "name": "Amass Wealth",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 5,
+                    "jolnar": 6,
+                    "arborec": 6,
+                    "nekro": 4,
+                    "xxcha": 7
+                },
+                "progressThreshold": 9,
+                "multiScoring": false
+            },
+            {
+                "key": "build_defenses",
+                "name": "Build Defenses",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 1,
+                    "jolnar": 3,
+                    "arborec": 2,
+                    "nekro": 1,
+                    "xxcha": 2
+                },
+                "progressThreshold": 4,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_6249",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5983",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5375",
+                "name": "UNREVEALED",
+                "pointValue": 1,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_8723",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_0552",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_8943",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5268",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "UNREVEALED_5291",
+                "name": "UNREVEALED",
+                "pointValue": 2,
+                "revealed": false,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {},
+                "progressThreshold": 0,
+                "multiScoring": false
+            },
+            {
+                "key": "Custodian/Imperial",
+                "name": "Custodian/Imperial",
+                "pointValue": 1,
+                "revealed": true,
+                "scoredFactions": [],
+                "peekingFactions": [],
+                "factionProgress": {
+                    "ghost": 0,
+                    "jolnar": 0,
+                    "arborec": 0,
+                    "nekro": 0,
+                    "xxcha": 0
+                },
+                "progressThreshold": 0,
+                "multiScoring": true
+            }
+        ]
+    },
+    "vpsToWin": 14,
     "tilePositions": [
         "000:18",
-        "101:60",
-        "102:26",
-        "103:43",
-        "104:67",
-        "105:76",
-        "106:62",
-        "201:36",
-        "202:79",
-        "203:46",
-        "204:49",
-        "205:72",
-        "206:19",
-        "207:40",
-        "208:73",
-        "209:50",
-        "210:44",
-        "211:48",
-        "212:65",
-        "301:11",
-        "302:28",
-        "303:23",
-        "304:17",
-        "305:37",
-        "306:68",
-        "307:09",
-        "308:33",
-        "309:63",
-        "310:04",
-        "311:34",
-        "312:71",
-        "313:57",
-        "314:61",
-        "315:29",
-        "316:58",
-        "317:42",
-        "318:45",
+        "101:79",
+        "102:40",
+        "103:28",
+        "104:86a",
+        "105:69",
+        "106:19",
+        "201:33",
+        "202:75",
+        "203:63",
+        "204:68",
+        "205:25",
+        "206:88a",
+        "207:39",
+        "208:87a",
+        "209:26",
+        "210:20",
+        "211:65",
+        "212:43",
+        "301:17",
+        "302:21",
+        "303:72",
+        "304:05",
+        "305:70",
+        "306:73",
+        "307:14",
+        "308:41",
+        "309:83a",
+        "310:85a",
+        "311:84a",
+        "312:78",
+        "313:12",
+        "314:46",
+        "315:67",
+        "316:08",
+        "317:35",
+        "318:47",
         "tl:82a",
         "tr:51"
     ]

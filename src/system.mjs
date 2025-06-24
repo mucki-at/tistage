@@ -168,7 +168,8 @@ export class System extends THREE.Group {
             "#system > #name"
         ).innerHTML = `${this.description.name} (${this.id})`;
         console.log(JSON.stringify(this.description, null, 2));
-        /*        document.querySelector("#system > #location").innerHTML = `X: ${this.tileId[0]}, Y: ${this.tileId[1]}`;
+        document.querySelector("#system > #location").innerHTML = `X: ${this.tileId[0]}, Y: ${this.tileId[1]}`;
+        /*
         document.querySelector(
             "#system > #description"
         ).innerHTML = `<br/><pre>${JSON.stringify(this.description, null, 2)}</pre>`;
