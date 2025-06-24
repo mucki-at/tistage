@@ -1,6 +1,6 @@
-import {Table} from "./table.mjs"
-import {System} from "./system.mjs"
-import {Unit} from "./units.mjs";
+import { Table } from "./table.mjs"
+import { System } from "./system.mjs"
+import { Unit } from "./units.mjs";
 import * as utils from "./utils.mjs";
 
 export class Game {
@@ -17,6 +17,7 @@ export class Game {
         sd: "spacedock",
         ws: "warsun"
     };
+
     constructor(table) {
         this.table = table;
         this.state = null;
@@ -24,7 +25,7 @@ export class Game {
 
     reload(url) {
         utils
-            .LoadJsonAsync(url)
+            .loadJsonAsync(url)
             .then((data) => {
                 this.state = data;
                 this.#setupTable();
