@@ -3,7 +3,6 @@ import { Room } from "./room.mjs";
 import { Table } from "./table.mjs";
 import * as utils from "./utils.mjs";
 import { UnitLayout } from "./unitlayout.mjs";
-import { UnitLayout } from "./unitlayout.mjs";
 
 export class System extends THREE.Group {
     static #RepoURL =
