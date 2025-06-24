@@ -9,8 +9,8 @@ dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
 export const gltf = new GLTFLoader();
 gltf.setDRACOLoader(dracoLoader);
 
-const errorTexture = new THREE.DataTexture(new Uint8Array([255, 0, 255, 255]), 1, 1);
-const errorMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+export const ErrorTexture = new THREE.DataTexture(new Uint8Array([255, 0, 255, 255]), 1, 1);
+export const ErrorMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
 
 export function loadGltfMaterialAsync(url : string) : Promise<THREE.Material>
 {
@@ -30,7 +30,7 @@ export function loadGltfMaterialAsync(url : string) : Promise<THREE.Material>
         })
         .catch((e) => {
             console.log(`Failed to load GLTF material '${url}': ${e.message}`);
-            return errorMaterial;
+            return ErrorMaterial;
         });
 }
 
@@ -51,7 +51,7 @@ export function loadTextureAsync(
         })
         .catch((e) => {
             console.error(`Failed to load texture '${url}': ${e.message}`);
-            return errorTexture;
+            return ErrorTexture;
         });
 }
 
