@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Room } from "./room.mjs";
 import * as utils from "./utils.mjs";
 
 export class Units {
@@ -18,7 +19,7 @@ export class Units {
                 type: "meshLoaded",
                 template: template,
             });
-            window.updateRoom();
+            Room.updateRoom();
             return template;
         })
         .catch((reason) => {
@@ -36,7 +37,7 @@ export class Units {
                 type: "meshLoaded",
                 template: template,
             });
-            window.updateRoom();
+            Room.updateRoom();
         });
     }
 

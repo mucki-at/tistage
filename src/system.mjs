@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Room } from "./room.mjs";
 import * as utils from "./utils.mjs";
 import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
 
@@ -52,9 +53,9 @@ export class System extends THREE.Group {
 
         System.#template.then((parts) => {
             const top = parts.top?.clone();
-            this.add(top);
+            if (top) this.add(top);
             this.add(parts.sides?.clone());
-            window.updateRoom();
+            Room.updateRoom();
 
             System.getDescription(id)
                 .then((data) => {
@@ -95,14 +96,14 @@ export class System extends THREE.Group {
                     this.layoutUnits();
 
                     utils
-                        .LoadTextureAsync(
+                        .loadTextureAsync(
                             `${System.#RepoURL}/tiles/${data.imagePath}`
                         )
                         .then((texture) => {
                             const topMat = top.material.clone();
                             topMat.map = texture;
                             top.material = topMat;
-                            window.updateRoom();
+                            Room.updateRoom();
                         })
                         .catch((error) => {
                             console.error(
