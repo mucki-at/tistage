@@ -23,12 +23,12 @@ export class Table extends THREE.Mesh {
     static basis = [1, 0, 0, 1];
     static basis_inv = [1, 0, 0, 1];
     static directions = [
-        [1, 0],
         [0, 1],
-        [-1, 1],
-        [-1, 0],
-        [0, -1],
+        [1, 0],
         [1, -1],
+        [0, -1],
+        [-1, 0],
+        [-1, 1],
     ];
 
     static {
@@ -36,10 +36,10 @@ export class Table extends THREE.Mesh {
         const sin30 = 0.5;
 
         this.basis = [
-            0,
             1.5 * this.TileRadius,
-            Math.sqrt(3) * this.TileRadius,
+            0,
             (Math.sqrt(3) * this.TileRadius) / 2.0,
+            Math.sqrt(3) * this.TileRadius,
         ];
 
         const det =

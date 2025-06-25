@@ -44,57 +44,70 @@ export class Game {
         });
 
         this.table.clearSystems();
-        this.state.tilePositions.forEach((element) => {
-            let positionStr, id;
+        for (let element of this.state.tilePositions) {
+            let positionStr, id, tileId;
             [positionStr, id] = element.split(":");
+
             const position = parseInt(positionStr);
             if (!isNaN(position)) {
-                const tileId = Table.TileIdFromRingAndSlot(
+                tileId = Table.TileIdFromRingAndSlot(
                     Math.floor(position / 100),
                     position % 100
                 );
-                var system = new System(id);
-                this.table.setSystem(tileId, system);
+            }
+            else if (positionStr=="tl")
+            {
+                tileId = [ -2, 5];
+            }
+            else if (positionStr=="tr")
+            {
+                tileId = [ 2, 3];
+            }
+            else
+            {
+                continue;
+            }
+            var system = new System(id);
+            this.table.setSystem(tileId, system);
 
-                const data = this.state.tileUnitData[positionStr];
-                if (data) {
-                    for (const [faction, units] of Object.entries(data.space)) {
+            const data = this.state.tileUnitData[positionStr];
+            if (data) {
+                for (const [faction, units] of Object.entries(data.space)) {
+                    const color = factionColors[faction];
+                    units.forEach((unitDef) => {
+                        if (unitDef.entityType == "unit")
+                        {
+                            for (let i=0; i<unitDef.count; ++i)
+                            {
+                                const unit = new Unit(
+                                    Game.unitNames[unitDef.entityId]
+                                );
+                                unit.setColor(color);
+                                system.addUnit(unit, "space");
+                            }
+                        }
+                    });
+                }
+                for (const [name, planet] of Object.entries(data.planets))
+                {
+                    for (const [faction, units] of Object.entries(planet.entities))
+                    {
                         const color = factionColors[faction];
                         units.forEach((unitDef) => {
-                            if (unitDef.entityType == "unit")
-                            {
+                            if (unitDef.entityType == "unit") {
                                 for (let i=0; i<unitDef.count; ++i)
                                 {
-                                    const unit = new Unit(
+                                            const unit = new Unit(
                                         Game.unitNames[unitDef.entityId]
                                     );
                                     unit.setColor(color);
-                                    system.addUnit(unit, "space");
+                                    system.addUnit(unit, name);
                                 }
                             }
                         });
                     }
-                    for (const [name, planet] of Object.entries(data.planets))
-                    {
-                        for (const [faction, units] of Object.entries(planet.entities))
-                        {
-                            const color = factionColors[faction];
-                            units.forEach((unitDef) => {
-                                if (unitDef.entityType == "unit") {
-                                    for (let i=0; i<unitDef.count; ++i)
-                                    {
-                                                const unit = new Unit(
-                                            Game.unitNames[unitDef.entityId]
-                                        );
-                                        unit.setColor(color);
-                                        system.addUnit(unit, name);
-                                    }
-                                }
-                            });
-                        }
-                    }
                 }
             }
-        });
+        }
     }
 }
