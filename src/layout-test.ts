@@ -1,7 +1,7 @@
-import "./layout-test.css"
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import * as THREE from "three";
-import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
+import * as unitlayout from "./unitlayout.mts"
+import * as DC from "detect-collisions"
 
 const drawingboard = document.getElementById("drawingboard")!;
 const canvas: HTMLCanvasElement = document.createElement("canvas")!;
@@ -15,6 +15,7 @@ ctx.setTransform(1, 0, 0, -1, 500, 500);
 //// helpers to draw shape geometries on canvas
 
 function drawPath(
+    ctx: CanvasRenderingContext2D,
     path: THREE.Path,
     segments: number = 12,
     style: string = "black"
@@ -29,34 +30,40 @@ function drawPath(
 }
 
 function drawShape(
+    ctx: CanvasRenderingContext2D,
     shape: THREE.Shape,
     segments: number = 12,
     style: string = "green",
     holeStyle: string = "red"
 ) {
-    drawPath(shape, segments, style);
-    for (let hole of shape.holes) drawPath(hole, segments, holeStyle);
+    drawPath(ctx, shape, segments, style);
+    for (let hole of shape.holes) drawPath(ctx, hole, segments, holeStyle);
 }
 
-function drawShapeGeometryBounds(shape: THREE.ShapeGeometry) {
+function drawShapeGeometryBounds(
+    ctx: CanvasRenderingContext2D,
+    shape: THREE.ShapeGeometry
+) {
     if (Array.isArray(shape.parameters.shapes) === false) {
-        drawShape(shape.parameters.shapes, shape.parameters.curveSegments);
+        drawShape(ctx, shape.parameters.shapes, shape.parameters.curveSegments);
     } else {
         for (let sub of shape.parameters.shapes)
-            drawShape(sub, shape.parameters.curveSegments);
+            drawShape(ctx, sub, shape.parameters.curveSegments);
     }
 }
 
-function drawGeometryTriangles(shape: THREE.BufferGeometry, style:string = "black")
-{
+function drawGeometryTriangles(
+    ctx: CanvasRenderingContext2D,
+    shape: THREE.BufferGeometry,
+    style: string = "black"
+) {
     const triGeom = shape.toNonIndexed()!;
-    const triangles = triGeom.getAttribute('position')!;
+    const triangles = triGeom.getAttribute("position")!;
 
     ctx.strokeStyle = style;
     ctx.beginPath();
 
-    for (let i=0; i<triangles.count; i+=3)
-    {
+    for (let i = 0; i < triangles.count; i += 3) {
         let v0 = new THREE.Vector3();
         let v1 = new THREE.Vector3();
         let v2 = new THREE.Vector3();
@@ -78,75 +85,124 @@ const radius = 500;
 const planetRadius = 150;
 const planetPos = 250;
 
-let hexagon = new Array<THREE.Vector2>(6);
-for (let i = 0; i < 6; ++i)
-{
-    hexagon[i] = new THREE.Vector2(Math.cos(i * Math.PI / 3) * 500, -Math.sin(i * Math.PI / 3) * 500);
-}
-let spawnArea = 3*Math.sqrt(3)*radius*radius/2;
-const spawningShape = new THREE.Shape(hexagon);
-spawningShape.closePath();
-for (let i=0; i<3; ++i)
-{
-    let planet=new THREE.Path();
-    planet.absarc(
-        Math.cos((i * Math.PI) / 1.5) * 250,
-        -Math.sin((i * Math.PI) / 1.5) * 250,
-        150,
-        0,
-        2*Math.PI,
-        false
-    );
-    spawnArea -= 150 * 150 * Math.PI;
+const planets = [
+    { center: { x: planetPos, y: 0 }, radius: planetRadius },
+    {
+        center: { x: -0.5 * planetPos, y: -0.866 * planetPos },
+        radius: planetRadius,
+    },
+    {
+        center: { x: -0.5 * planetPos, y: 0.866 * planetPos },
+        radius: planetRadius,
+    },
+];
 
-    planet.closePath();
-    spawningShape.holes.push(planet);
-}
+const layout = unitlayout.makeHexagonLayout(radius, planets);
+const sampler : unitlayout.InspectableSampler = unitlayout.makeRandomSampler(layout);
+const spawnArea = 3 * Math.sqrt(3) * radius * radius / 2.0 - 3.0 * planetRadius*planetRadius*Math.PI;
 
-const spawningGeometry = new THREE.ShapeGeometry(spawningShape);
-const spawningMesh = new THREE.Mesh(spawningGeometry);
-const spawner = new MeshSurfaceSampler(spawningMesh);
-spawner.build();
+const dcArranger = unitlayout.makeDCArranger(layout);
 
 const test =
 {
     fill: 50.0,
-    bounds: drawBounds,
-    triangles: drawTriangles,
-    randomFill: randomFill,
+    units: 10,
+    radius: 50,
+    bounds: drawBounds.bind(this, ctx, sampler),
+    triangles: drawTriangles.bind(this,ctx, sampler),
+    randomFill: randomFill.bind(this,ctx, sampler),
+    arrangeDC: testArrange.bind(this, ctx, sampler, dcArranger),
 };
 
-function drawBounds()
-{
+function drawBounds(
+    ctx: CanvasRenderingContext2D,
+    sampler: unitlayout.InspectableSampler
+) {
     ctx.clearRect(-500, -500, 1001, 1001);
-    drawShapeGeometryBounds(spawningGeometry);
+    if (sampler.spawner) {
+        const geom = sampler.spawner.geometry;
+        if ("parameters" in geom) {
+            drawShapeGeometryBounds(ctx, geom as THREE.ShapeGeometry);
+        } else {
+            drawGeometryTriangles(ctx,geom);
+        }
+    }
 }
 
-function drawTriangles()
-{
+function drawTriangles(
+    ctx: CanvasRenderingContext2D,
+    sampler: unitlayout.InspectableSampler
+) {
     ctx.clearRect(-500, -500, 1001, 1001);
-    drawGeometryTriangles(spawningGeometry);
+    if (sampler.spawner) {
+        drawGeometryTriangles(ctx, sampler.spawner.geometry);
+    }
 }
     
-function randomFill()
-{
+function randomFill(
+    ctx: CanvasRenderingContext2D,
+    sampler: unitlayout.InspectableSampler
+) {
     ctx.clearRect(-500, -500, 1001, 1001);
-    const pointCount = spawnArea * test.fill / 100;
-    let pos=new THREE.Vector3(0,0,0);
-    for (let i =0; i<pointCount; ++i)
+    const pointCount = (spawnArea * test.fill) / 100;
+    for (let i = 0; i < pointCount; ++i)
     {
-        spawner.sample(pos);
+        const pos = sampler.sample();
         ctx.fillRect(pos.x, pos.y, 1, 1);
+    }
+}
+
+function testArrange(ctx: CanvasRenderingContext2D,
+    sampler: unitlayout.Sampler,
+    arranger: unitlayout.UnitArranger)
+{
+    drawBounds(ctx, sampler);
+
+    const units=new Array<unitlayout.LayoutUnit>(test.units);
+    for (let i=0; i<units.length; ++i)
+    {
+        units[i]={ position: sampler.sample(), radius:test.radius };
+    }
+
+    ctx.strokeStyle = "red";
+    for (let i = 0; i < units.length; ++i)
+    {
+        ctx.beginPath();
+        ctx.arc(
+            units[i].position.x,
+            units[i].position.y,
+            units[i].radius,
+            0,
+            2 * Math.PI
+        );
+        ctx.stroke();
+    }
+
+    arranger.arrange(units);
+
+    ctx.strokeStyle = "green";
+    for (let i = 0; i < units.length; ++i) {
+        ctx.beginPath();
+        ctx.arc(
+            units[i].position.x,
+            units[i].position.y,
+            units[i].radius,
+            0,
+            2 * Math.PI
+        );
+        ctx.stroke();
     }
 
 }
 
 const gui = new GUI({ width: 310 });
 gui.add(test, 'fill', 0, 100, 1);
-for (let key in test)
+gui.add(test, "units", 1, 100, 1);
+gui.add(test, "radius", 1, 500, 10);
+for (const [key, value] of Object.entries(test))
 {
-    if (test[key] instanceof Function)
+    if (value instanceof Function)
     {
-        gui.add(test, key);
+        gui.add(test, key as any);
     }
 }

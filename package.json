@@ -15,6 +15,7 @@
         "vite": "^6.3.5"
     },
     "dependencies": {
-        "three": "^0.176.0"
+        "detect-collisions": "^9.27.6",
+        "three": "^0.177.0"
     }
 }
