@@ -37,7 +37,7 @@ export class Units {
             return { };
         });
     static #template = utils.gltf
-        .loadAsync("Saunick.glb")
+        .loadAsync("saunick.glb")
         .then((result) => {
             var units = {};
             Units.#unitNames.forEach((name) => {
@@ -54,7 +54,7 @@ export class Units {
             return template;
         })
         .catch((reason) => {
-            console.error("Error loading Saunick.glb:", reason);
+            console.error("Error loading saunick.glb:", reason);
             return { fighter: null, destroyer: null, cruiser: null };
         });
 

@@ -94,9 +94,9 @@ export class Room extends THREE.Scene {
                 this.#renderer.domElement
             );
             controls.mouseButtons = {
-                LEFT: null,
+                LEFT: THREE.MOUSE.PAN,
                 MIDDLE: THREE.MOUSE.DOLLY,
-                RIGHT: THREE.MOUSE.PAN,
+                RIGHT: THREE.MOUSE.ROTATE,
             };
             controls.addEventListener("change", Room.updateRoom);
             controls.target.set(0, 0, 0);

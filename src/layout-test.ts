@@ -1,7 +1,6 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import * as THREE from "three";
 import * as unitlayout from "./unitlayout.mts"
-import * as DC from "detect-collisions"
 
 const drawingboard = document.getElementById("drawingboard")!;
 const canvas: HTMLCanvasElement = document.createElement("canvas")!;
@@ -86,18 +85,18 @@ const planetRadius = 150;
 const planetPos = 250;
 
 const planets = [
-    { center: { x: planetPos, y: 0 }, radius: planetRadius },
+    { x: planetPos, y: 0, radius: planetRadius },
     {
-        center: { x: -0.5 * planetPos, y: -0.866 * planetPos },
+        x: -0.5 * planetPos, y: -0.866 * planetPos,
         radius: planetRadius,
     },
     {
-        center: { x: -0.5 * planetPos, y: 0.866 * planetPos },
+        x: -0.5 * planetPos, y: 0.866 * planetPos,
         radius: planetRadius,
     },
 ];
 
-const layout = unitlayout.makeHexagonLayout(radius, planets);
+const layout = unitlayout.makeSystemLayout({ x:0, y:0, radius:radius }, planets);
 const sampler : unitlayout.InspectableSampler = unitlayout.makeRandomSampler(layout);
 const spawnArea = 3 * Math.sqrt(3) * radius * radius / 2.0 - 3.0 * planetRadius*planetRadius*Math.PI;
 
@@ -147,7 +146,7 @@ function randomFill(
     const pointCount = (spawnArea * test.fill) / 100;
     for (let i = 0; i < pointCount; ++i)
     {
-        const pos = sampler.sample();
+        const pos = sampler.sample(0);
         ctx.fillRect(pos.x, pos.y, 1, 1);
     }
 }
@@ -161,7 +160,7 @@ function testArrange(ctx: CanvasRenderingContext2D,
     const units=new Array<unitlayout.LayoutUnit>(test.units);
     for (let i=0; i<units.length; ++i)
     {
-        units[i]={ position: sampler.sample(), radius:test.radius };
+        units[i]={ position: sampler.sample(0), radius:test.radius };
     }
 
     ctx.strokeStyle = "red";
@@ -178,7 +177,7 @@ function testArrange(ctx: CanvasRenderingContext2D,
         ctx.stroke();
     }
 
-    arranger.arrange(units);
+    arranger.arrange(0,units);
 
     ctx.strokeStyle = "green";
     for (let i = 0; i < units.length; ++i) {
