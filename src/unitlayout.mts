@@ -115,7 +115,7 @@ export interface UnitArranger
 }
 
 export function makeNullArranger(
-    layout: LayoutDefinition,
+    _: LayoutDefinition,
     sampler?: Sampler
 ): UnitArranger
 {

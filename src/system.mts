@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { Room } from "./room.mjs";
+// @ts-expect-error
 import { Unit } from "./units.mjs";
 import * as utils from "./utils.mjs";
 import * as layout from "./unitlayout.mts";
@@ -187,7 +188,7 @@ export class System extends THREE.Group {
         }
     }
 
-    onObjectSelected(event: MouseEvent, intersect: THREE.Intersection)
+    onObjectSelected()
     {
         document.querySelector(
             "#system > #name"
