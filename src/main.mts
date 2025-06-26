@@ -1,7 +1,10 @@
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { Room } from "./room.mts"
 import { Table } from "./table.mts"
+// @ts-expect-error
 import { Game } from "./game.mjs";
+
+import "./main.css"
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);

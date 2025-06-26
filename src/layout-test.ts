@@ -160,7 +160,7 @@ function testArrange(ctx: CanvasRenderingContext2D,
     const units=new Array<unitlayout.LayoutUnit>(test.units);
     for (let i=0; i<units.length; ++i)
     {
-        units[i]={ position: sampler.sample(0), radius:test.radius };
+        units[i]={ position: sampler.sample(0), angle: 0, radius:test.radius };
     }
 
     ctx.strokeStyle = "red";
