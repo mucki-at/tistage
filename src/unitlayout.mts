@@ -137,84 +137,122 @@ export function makeNullArranger(
     return arranger;
 }
 
-export function mjLineToBounds(a: PointLike, b: PointLike)
-{
+const mjDefaultBodyOptions : mj.IBodyDefinition = {
+    friction: 1,
+    frictionAir: 0.1,
+    frictionStatic: 10,
+    restitution: 1
+}
+
+export function mjLineToBounds(
+    a: PointLike,
+    b: PointLike,
+    options: mj.IBodyDefinition = mjDefaultBodyOptions
+) {
     const dx = b.x - a.x;
     const dy = b.y - a.y;
+    const overshoot = 0.2;
+    const thickness = 1;
 
-    const tr = { x: b.x + dx, y: b.y + dy };
-    const br = { x: a.x - dx, y: a.y - dy };
-    const tl = { x: tr.x - dy, y: tr.y + dx };
-    const bl = { x: br.x - dy, y: br.y + dx };
+    const tr = { x: b.x + dx * overshoot, y: b.y + dy * overshoot };
+    const br = { x: a.x - dx * overshoot, y: a.y - dy * overshoot };
+    const tl = { x: tr.x - dy * thickness, y: tr.y + dx * thickness };
+    const bl = { x: br.x - dy * thickness, y: br.y + dx * thickness };
 
     const cx = (tr.x + bl.x) / 2;
     const cy = (tr.y + bl.y) / 2;
 
-    return mj.Bodies.fromVertices(cx, cy, [[tr, br, bl, tl]], {
-        isStatic: true,
-    });
+    return mj.Bodies.fromVertices(cx, cy, [[tr, br, bl, tl]], { ...options, isStatic:true } );
 };
 
-export function makeMatterArranger(layout: LayoutDefinition, sampler?: Sampler)
-{
+export function makeMatterArranger(
+    layout: LayoutDefinition,
+    sampler?: Sampler,
+    options: mj.IBodyDefinition = mjDefaultBodyOptions
+) {
     const bounds = new Array<mj.Body>(layout.bounds.length);
     bounds[0] = mjLineToBounds(
         layout.bounds[layout.bounds.length - 1],
-        layout.bounds[0]
+        layout.bounds[0],
+        options
     );
     for (let i = 1; i < layout.bounds.length; ++i) {
-        bounds[i] = mjLineToBounds(layout.bounds[i - 1], layout.bounds[i]);
+        bounds[i] = mjLineToBounds(layout.bounds[i - 1], layout.bounds[i], options);
     }
 
     const planets = layout.planets.map((planet) =>
-        mj.Bodies.circle(planet.x, planet.y, planet.radius, { isStatic: true })
+        mj.Bodies.circle(planet.x, planet.y, planet.radius, { ...options, slop: 2, isStatic: true })
     );
 
     const arranger = {
         bounds: bounds,
+        planetDefs: layout.planets,
         planets: planets,
         sampler: sampler,
-        arrange(region: number, units: LayoutUnit[]): void {
-            if (region == 0) {
-                const engine = mj.Engine.create({
-                    enableSleeping: true,
-                    gravity: { scale: 0 },
-                });
+        options: options,
+        arrange(region: number, units: LayoutUnit[]): void
+        {
+            const engine = mj.Engine.create({
+                enableSleeping: true,
+                gravity: { scale: 0 },
+            });
 
+            if (region == 0)
+            {
                 mj.Composite.add(engine.world, this.bounds);
                 mj.Composite.add(engine.world, this.planets);
+            }
+            else
+            {
+                let pd=this.planetDefs[region-1];
+                let circle = new Array<PointLike>(12);
+                for (let i = 0; i < circle.length; ++i)
+                {
+                    circle[i] = { x: pd.x + Math.cos(i * Math.PI * 2 / circle.length) * pd.radius, y: pd.y - Math.sin(i * Math.PI *  2/ circle.length) * pd.radius };
+                }
+                mj.Composite.add(engine.world,mjLineToBounds(
+                    circle[circle.length - 1],
+                    circle[0],
+                    { ...this.options, slop: 2 }
+                ));
+                for (let i = 1; i < circle.length; ++i) {
+                    mj.Composite.add(engine.world,mjLineToBounds(circle[i - 1], circle[i], this.options))
+                }
+            }
 
-                const collisionUnits = units.map((unit) => {
-                    const pos = sampler?.sample(region) ?? unit.position;
-                    let ang=unit.angle;
-                    if (sampler)
+            const collisionUnits = units.map((unit) => {
+                const pos = sampler?.sample(region) ?? unit.position;
+                let ang = unit.angle;
+                if (sampler) {
+                    ang = Math.atan2(pos.y, pos.x) + Math.PI / 2;
+                }
+                return mj.Bodies.rectangle(
+                    pos.x,
+                    pos.y,
+                    unit.width,
+                    unit.height,
                     {
-                        ang=Math.atan2(pos.y, pos.x) + Math.PI/2;
+                        ...this.options,
+                        angle: ang,
+                        sleepThreshold: 60,
                     }
-                    return mj.Bodies.rectangle(pos.x, pos.y, unit.width, unit.height, {angle:ang, torque: 0.1, restitution: 0.2, sleepThreshold: 60});
-                });
-                mj.Composite.add(engine.world, collisionUnits);
+                );
+            });
+            mj.Composite.add(engine.world, collisionUnits);
 
-                while (
-                    !mj.Composite.allBodies(engine.world).every(
-                        (body) => body.isSleeping
-                    )
-                ) {
-                    mj.Engine.update(engine);
-                }
+            while (
+                !mj.Composite.allBodies(engine.world).every(
+                    (body) => body.isSleeping
+                )
+            ) {
+                mj.Engine.update(engine);
+                if (engine.timing.timestamp > 1000) break;
+            }
 
-                for (let i = 0; i < units.length; ++i) {
-                    units[i].position.x = collisionUnits[i].position.x;
-                    units[i].position.y = collisionUnits[i].position.y;
-                    units[i].angle = collisionUnits[i].angle;
-                }
-            } else {
-                if (this.sampler) {
-                    for (let i = 0; i < units.length; ++i) {
-                        units[i].position = this.sampler.sample(region);
-                        units[i].angle = Math.random() * 2 * Math.PI;
-                    }
-                }
+            for (let i = 0; i < units.length; ++i) {
+                units[i].position.x = collisionUnits[i].position.x;
+                units[i].position.y = collisionUnits[i].position.y;
+                units[i].angle = collisionUnits[i].angle;
             }
         },
     };

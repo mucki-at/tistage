@@ -30,13 +30,23 @@ const test:any =
 {
     fill: 50.0,
     units: 10,
-    radius: 50
+    width: 10,
+    height: 30,
+    friction: 0.1,
+    airFriction: 0.1,
+    staticFriction: 1,
+    restitution: 0,
 }
 
 const gui = new GUI({ width: 310 });
 gui.add(test, 'fill', 0, 100, 1);
 gui.add(test, "units", 1, 100, 1);
-gui.add(test, "radius", 1, 500, 10);
+gui.add(test, "width", 1, 100, 10);
+gui.add(test, "height", 1, 100, 10);
+gui.add(test, "friction", 0, 1, 0.01);
+gui.add(test, "airFriction", 0, 1, 0.01);
+gui.add(test, "staticFriction", 0, 10, 0.1);
+gui.add(test, "restitution", 0, 1, 0.01);
 
 
 function addTest(name: string, fun: Function)
@@ -203,10 +213,16 @@ addTest("mjPackRectangles", ()=>{
 
     // create a box to fill
     let box = [
-        mj.Bodies.rectangle(500, 75, 1000, 50, { isStatic: true }),
-        mj.Bodies.rectangle(500, 925, 1000, 50, { isStatic: true }),
-        mj.Bodies.rectangle(75, 500, 50, 1000, { isStatic: true }),
-        mj.Bodies.rectangle(925, 500, 50, 1000, { isStatic: true }),
+        mj.Bodies.rectangle(500, 75, 1000, 50, { friction: 0, isStatic: true }),
+        mj.Bodies.rectangle(500, 925, 1000, 50, {
+            friction: 0,
+            isStatic: true,
+        }),
+        mj.Bodies.rectangle(75, 500, 50, 1000, { friction: 0, isStatic: true }),
+        mj.Bodies.rectangle(925, 500, 50, 1000, {
+            friction: 0,
+            isStatic: true,
+        }),
     ];
 
     // add all of the bodies to the world
@@ -220,7 +236,14 @@ addTest("mjPackRectangles", ()=>{
     mouseClick= (x:number,y:number)=>
     {
         console.log(`x: ${x}, y: ${y}`);
-        mj.Composite.add(mjEngine.world, mj.Bodies.rectangle(x, y, 100, 10, { angle: Math.random()*Math.PI*2, restitution: 0.2 }));
+        mj.Composite.add(
+            mjEngine.world,
+            mj.Bodies.rectangle(x, y, test.width, test.height, {
+                friction: 0,
+                angle: Math.random() * Math.PI * 2,
+                restitution: 0.2,
+            })
+        );
         mj.Composite.allBodies(mjEngine.world).forEach((body) => mj.Sleeping.set(body, false));
     }
 });
@@ -230,20 +253,30 @@ addTest("mjArrangeLive", () => {
     mj.Composite.clear(mjEngine.world, false, true);
     mjEngine.world.gravity.scale = 0;
 
+    const boundaryOptions = {
+        friction: test.friction,
+        frictionAir: test.airFriction,
+        frictionStatic: test.staticFriction,
+        restitution: test.restitution,
+        isStatic: true,
+    };
+
     const bounds = new Array<mj.Body>(layout.bounds.length);
     bounds[0] = unitlayout.mjLineToBounds(
         layout.bounds[layout.bounds.length - 1],
-        layout.bounds[0]
+        layout.bounds[0],
+        boundaryOptions
     );
     for (let i = 1; i < layout.bounds.length; ++i) {
         bounds[i] = unitlayout.mjLineToBounds(
             layout.bounds[i - 1],
-            layout.bounds[i]
+            layout.bounds[i],
+            boundaryOptions
         );
     }
 
     const planets = layout.planets.map((planet) =>
-        mj.Bodies.circle(planet.x, planet.y, planet.radius, { isStatic: true })
+        mj.Bodies.circle(planet.x, planet.y, planet.radius, { ...boundaryOptions, slop:2 })
     );
 
     mj.Composite.add(mjEngine.world, bounds);
@@ -252,12 +285,15 @@ addTest("mjArrangeLive", () => {
     const units=new Array<unitlayout.LayoutUnit>(test.units);
     for (let i=0; i<units.length; ++i)
     {
-        units[i]={ position: sampler.sample(0), angle: Math.random() * 2 * Math.PI, width:test.radius, height: test.radius/2 };
+        units[i]={ position: sampler.sample(0), angle: Math.random() * 2 * Math.PI, width:test.width, height: test.height };
     }
     const collisionUnits = units.map((unit) => {
         const pos = unit.position;
-        return mj.Bodies.rectangle(pos.x, pos.y, unit.width, unit.height,
-        {
+        return mj.Bodies.rectangle(pos.x, pos.y, unit.width, unit.height, {
+            friction: test.friction,
+            frictionAir: test.airFriction,
+            frictionStatic: test.staticFriction,
+            restitution: test.restitution,
             angle: unit.angle,
             sleepThreshold: 60,
         });
@@ -318,7 +354,7 @@ function testArrange(
     const units=new Array<unitlayout.LayoutUnit>(test.units);
     for (let i=0; i<units.length; ++i)
     {
-        units[i]={ position: sampler.sample(0), angle: Math.random()*2*Math.PI, width:test.radius, height:test.radius/2 };
+        units[i]={ position: sampler.sample(0), angle: Math.random()*2*Math.PI, width:test.width, height:test.height };
     }
 
     ctx.strokeStyle = "red";
