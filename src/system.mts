@@ -16,16 +16,16 @@ export class System extends THREE.Group {
         "https://raw.githubusercontent.com/AsyncTI4/TI4_map_generator_bot/refs/heads/master/src/main/resources";
 
     static #template = utils.gltf
-        .loadAsync("System.glb")
+        .loadAsync("system.glb")
         .then((result) => {
             const top = result.scene.getObjectByName("top");
             const sides = result.scene.getObjectByName("sides");
 
             const boundsObj = result.scene.getObjectByName("bounds");
             const bounds = {
-                x: boundsObj?.position.x ?? 0,
-                y: boundsObj?.position.z ?? 0,
-                radius: parseFloat(boundsObj?.userData.radius) ?? 0.058,
+                x: (boundsObj?.position.x ?? 0)*1000,
+                y: (boundsObj?.position.z ?? 0)*1000,
+                radius: (parseFloat(boundsObj?.userData.radius) ?? 0.058)*1000,
             };
 
             let types = new Map<string, layout.UnitArranger>();
@@ -38,16 +38,16 @@ export class System extends THREE.Group {
                     const p = result.scene.getObjectByName(`planet${j}${i3}`);
                     if (p) {
                         planets[j] = {
-                            x: p.position.x,
-                            y: p.position.z,
-                            radius: parseFloat(p.userData.radius),
+                            x: p.position.x*1000,
+                            y: -p.position.z*1000,
+                            radius: parseFloat(p.userData.radius)*1000,
                         };
                     }
                 }
 
                 const l = layout.makeSystemLayout(bounds, planets);
                 const s = layout.makeRandomSampler(l);
-                types.set(`TYPE${i2}`, layout.makeDCArranger(l, s));
+                types.set(`TYPE${i2}`, layout.makeMatterArranger(l, s));
             }
 
             return { top: top, sides: sides, types: types };
@@ -175,15 +175,21 @@ export class System extends THREE.Group {
         if (this.arranger)
         {
             this.locations.forEach((location) => {
-                const layoutUnits = location.units.map(unit => { return { position: {x: unit.position.x, y: unit.position.z}, angle: 0, radius: 0.01 }});
-                this.arranger?.arrange(location.id, layoutUnits);
-                for (let i=0; i<layoutUnits.length; ++i)
+                if (location.units.length)
                 {
-                    location.units[i].matrix.identity();
-                    location.units[i].rotateY(layoutUnits[i].angle);
-                    location.units[i].position.set(layoutUnits[i].position.x, 0, layoutUnits[i].position.y);
+                    const layoutUnits = location.units.map(unit => { return { position: {x: 0, y: 0}, angle: 0, width: unit.width, height:unit.length }});
+                    this.arranger?.arrange(location.id, layoutUnits);
+                    for (let i=0; i<layoutUnits.length; ++i)
+                    {
+                        location.units[i].matrix.identity();
+                        location.units[i].position.set(
+                            layoutUnits[i].position.x/1000,
+                            location.units[i].height/2000,
+                            -layoutUnits[i].position.y/1000
+                        );
+                        location.units[i].rotateY(layoutUnits[i].angle);
+                    }
                 }
-
             });
         }
     }

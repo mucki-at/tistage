@@ -119,6 +119,17 @@ export class Unit extends THREE.Mesh {
 
         if (this.geometry != source.geometry) {
             this.geometry = source.geometry;
+
+            this.width =
+                (this.geometry.boundingBox.max.x -
+                this.geometry.boundingBox.min.x)*1000;
+            this.height =
+                (this.geometry.boundingBox.max.y -
+                this.geometry.boundingBox.min.y) *
+                   1000;
+            this.length = 
+                (this.geometry.boundingBox.max.z -
+                this.geometry.boundingBox.min.z)*1000;
         }
     }
 

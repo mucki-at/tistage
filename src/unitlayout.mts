@@ -1,7 +1,7 @@
 
 import * as THREE from 'three'
 import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
-import * as DC from 'detect-collisions';
+import * as mj from "matter-js";
 
 export interface PointLike
 {
@@ -35,7 +35,7 @@ export interface Sampler
 }
 
 export interface InspectableSampler extends Sampler {
-    spawner?: MeshSurfaceSampler;
+    space?: MeshSurfaceSampler;
 }
 
 export function makeCenterSampler(layout: LayoutDefinition): Sampler
@@ -105,7 +105,8 @@ export interface LayoutUnit
 {
     position: PointLike,
     angle: number,
-    readonly radius: number
+    readonly width: number,
+    readonly height: number
 }
 
 
@@ -136,62 +137,87 @@ export function makeNullArranger(
     return arranger;
 }
 
-export function makeDCArranger(layout: LayoutDefinition, sampler?: Sampler): UnitArranger
+export function mjLineToBounds(a: PointLike, b: PointLike)
 {
-    const bounds = new Array<DC.Line>(layout.bounds.length);
-    bounds[0] = new DC.Line(
-        layout.bounds[0],
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+
+    const tr = { x: b.x + dx, y: b.y + dy };
+    const br = { x: a.x - dx, y: a.y - dy };
+    const tl = { x: tr.x - dy, y: tr.y + dx };
+    const bl = { x: br.x - dy, y: br.y + dx };
+
+    const cx = (tr.x + bl.x) / 2;
+    const cy = (tr.y + bl.y) / 2;
+
+    return mj.Bodies.fromVertices(cx, cy, [[tr, br, bl, tl]], {
+        isStatic: true,
+    });
+};
+
+export function makeMatterArranger(layout: LayoutDefinition, sampler?: Sampler)
+{
+    const bounds = new Array<mj.Body>(layout.bounds.length);
+    bounds[0] = mjLineToBounds(
         layout.bounds[layout.bounds.length - 1],
-        { isStatic: true }
+        layout.bounds[0]
     );
-    for (let i=1; i<layout.bounds.length; ++i)
-    {
-        bounds[i] = new DC.Line(layout.bounds[i], layout.bounds[i-1], {
-            isStatic: true,
-        });
+    for (let i = 1; i < layout.bounds.length; ++i) {
+        bounds[i] = mjLineToBounds(layout.bounds[i - 1], layout.bounds[i]);
     }
 
-    const planets = layout.planets.map(planet => new DC.Ellipse(planet, planet.radius, undefined, undefined, {isStatic: true}));
-    
-    const arranger =
-    {
+    const planets = layout.planets.map((planet) =>
+        mj.Bodies.circle(planet.x, planet.y, planet.radius, { isStatic: true })
+    );
+
+    const arranger = {
         bounds: bounds,
         planets: planets,
         sampler: sampler,
-        arrange(region: number, units: LayoutUnit[]): void
-        {
-            if (region==0)
-            {
-                const system = new DC.System();
-                this.bounds.forEach((bound) => system.insert(bound));
-                this.planets.forEach((planet) => system.insert(planet));
-                const collisionUnits = units.map(unit => system.createEllipse(sampler?.sample(region) ?? unit.position, unit.radius));
+        arrange(region: number, units: LayoutUnit[]): void {
+            if (region == 0) {
+                const engine = mj.Engine.create({
+                    enableSleeping: true,
+                    gravity: { scale: 0 },
+                });
 
-                for (let i=0; i<10; ++i)
-                {
-                    system.separate();
+                mj.Composite.add(engine.world, this.bounds);
+                mj.Composite.add(engine.world, this.planets);
+
+                const collisionUnits = units.map((unit) => {
+                    const pos = sampler?.sample(region) ?? unit.position;
+                    let ang=unit.angle;
+                    if (sampler)
+                    {
+                        ang=Math.atan2(pos.y, pos.x) + Math.PI/2;
+                    }
+                    return mj.Bodies.rectangle(pos.x, pos.y, unit.width, unit.height, {angle:ang, torque: 0.1, restitution: 0.2, sleepThreshold: 60});
+                });
+                mj.Composite.add(engine.world, collisionUnits);
+
+                while (
+                    !mj.Composite.allBodies(engine.world).every(
+                        (body) => body.isSleeping
+                    )
+                ) {
+                    mj.Engine.update(engine);
                 }
 
-                for (let i=0; i<units.length; ++i)
-                {
-                    units[i].position.x=collisionUnits[i].x;
-                    units[i].position.y=collisionUnits[i].y;
-                    units[i].angle = Math.random() * 2 * Math.PI;
+                for (let i = 0; i < units.length; ++i) {
+                    units[i].position.x = collisionUnits[i].position.x;
+                    units[i].position.y = collisionUnits[i].position.y;
+                    units[i].angle = collisionUnits[i].angle;
                 }
-            }
-            else
-            {
+            } else {
                 if (this.sampler) {
                     for (let i = 0; i < units.length; ++i) {
                         units[i].position = this.sampler.sample(region);
                         units[i].angle = Math.random() * 2 * Math.PI;
                     }
                 }
-        
             }
-        }
-    }
+        },
+    };
 
     return arranger;
 }
-

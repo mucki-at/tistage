@@ -10,6 +10,7 @@
         "preview": "vite preview"
     },
     "devDependencies": {
+        "@types/matter-js": "^0.19.8",
         "@types/three": "^0.177.0",
         "canvas": "^3.1.2",
         "filereader": "^0.10.3",
@@ -18,7 +19,7 @@
         "vite": "^6.3.5"
     },
     "dependencies": {
-        "detect-collisions": "^9.27.6",
+        "matter-js": "^0.20.0",
         "three": "^0.177.0"
     }
 }
