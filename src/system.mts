@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import { Room } from "./room.mjs";
-// @ts-expect-error
-import { Unit } from "./units.mjs";
-import * as utils from "./utils.mjs";
+import { Room } from "./room.mts";
+import { Unit } from "./units.mts";
+import * as utils from "./utils.mts";
 import * as layout from "./unitlayout.mts";
 
 interface LocationData
@@ -236,6 +235,10 @@ export class System extends THREE.Group {
                         -unit.position.y / 1000
                     );
                     location.units[i].setRotationFromAxisAngle(THREE.Object3D.DEFAULT_UP, unit.angle);
+                    if (location.units[i].sustained)
+                    {
+                        location.units[i].rotateZ(Math.PI + THREE.MathUtils.randFloatSpread(Math.PI/6));
+                    }
                 });
             });
         }

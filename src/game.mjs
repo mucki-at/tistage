@@ -82,6 +82,7 @@ export class Game {
                                 const unit = new Unit(
                                     Game.unitNames[unitDef.entityId]
                                 );
+                                if (unitDef.sustained) unit.sustained = true;
                                 unit.setColor(color);
                                 system.addUnit(unit, "space");
                             }
@@ -97,9 +98,10 @@ export class Game {
                             if (unitDef.entityType == "unit") {
                                 for (let i=0; i<unitDef.count; ++i)
                                 {
-                                            const unit = new Unit(
+                                    const unit = new Unit(
                                         Game.unitNames[unitDef.entityId]
                                     );
+                                    if (unitDef.sustained) unit.sustained=true;
                                     unit.setColor(color);
                                     system.addUnit(unit, name);
                                 }
