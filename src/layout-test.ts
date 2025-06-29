@@ -1,5 +1,4 @@
 import { GUI } from "dat.gui";
-import * as THREE from "three";
 import * as unitlayout from "./unitlayout.mts"
 import * as mj from "matter-js";
 
