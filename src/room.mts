@@ -5,6 +5,7 @@ import * as utils from "./utils.mts";
 
  type SelectObjectEventHandler = (event: MouseEvent, intersect: THREE.Intersection)=>void;
 export type SelectableObject = THREE.Object3D & {
+    onObjectSelectionLost?: SelectObjectEventHandler;
     onObjectSelected?: SelectObjectEventHandler;
 };
 
@@ -106,7 +107,10 @@ export class Room extends THREE.Scene {
 
             document.body.appendChild(this.#renderer.domElement);
             window.addEventListener("resize", this.#onWindowResize.bind(this));
-            window.addEventListener("click", this.#onMouseClick.bind(this));
+            this.#renderer.domElement.addEventListener(
+                "click",
+                this.#onMouseClick.bind(this)
+            );
         }
 
         #onWindowResize() {
@@ -120,7 +124,10 @@ export class Room extends THREE.Scene {
             }
         }
 
-        #onMouseClick(event: MouseEvent) {
+        #previousSelection:SelectableObject | null = null;
+
+        #onMouseClick(event: MouseEvent)
+        {
             if (this.#raycaster && this.#camera) {
                 const pointer = new THREE.Vector2();
                 pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -140,7 +147,16 @@ export class Room extends THREE.Scene {
                     {
                         obj = obj.parent;
                     }
-                    obj?.onObjectSelected?.(event, intersects[0]);
+                    if (obj)
+                    {
+                        if (this.#previousSelection)
+                        {
+                            this.#previousSelection.onObjectSelectionLost?.(event, intersects[0]);
+
+                        }
+                        this.#previousSelection=obj;
+                        obj.onObjectSelected?.(event, intersects[0]);
+                    }
                 }
             }
         }

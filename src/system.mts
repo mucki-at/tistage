@@ -11,6 +11,8 @@ interface LocationData
     units: Unit[]
 }
 
+type Layout = layout.System & { sampler: layout.Sampler };
+
 export class System extends THREE.Group {
     static #RepoURL =
         "https://raw.githubusercontent.com/AsyncTI4/TI4_map_generator_bot/refs/heads/master/src/main/resources";
@@ -23,12 +25,13 @@ export class System extends THREE.Group {
 
             const boundsObj = result.scene.getObjectByName("bounds");
             const bounds = {
-                x: (boundsObj?.position.x ?? 0)*1000,
-                y: (boundsObj?.position.z ?? 0)*1000,
-                radius: (parseFloat(boundsObj?.userData.radius) ?? 0.058)*1000,
+                x: (boundsObj?.position.x ?? 0) * 1000,
+                y: (boundsObj?.position.z ?? 0) * 1000,
+                radius:
+                    (parseFloat(boundsObj?.userData.radius) ?? 0.058) * 1000,
             };
 
-            let types = new Map<string, layout.UnitArranger>();
+            let types = new Map<string, Layout>();
             for (let i = 1; i <= 15; ++i) {
                 const i2 = i.toString().padStart(2, "0");
                 const i3 = i.toString().padStart(3, "0");
@@ -38,16 +41,16 @@ export class System extends THREE.Group {
                     const p = result.scene.getObjectByName(`planet${j}${i3}`);
                     if (p) {
                         planets[j] = {
-                            x: p.position.x*1000,
-                            y: -p.position.z*1000,
-                            radius: parseFloat(p.userData.radius)*1000,
+                            x: p.position.x * 1000,
+                            y: -p.position.z * 1000,
+                            radius: parseFloat(p.userData.radius) * 1000,
                         };
                     }
                 }
 
-                const l = layout.makeSystemLayout(bounds, planets);
+                const l = layout.makeHexagonSystem(bounds, planets);
                 const s = layout.makeRandomSampler(l);
-                types.set(`TYPE${i2}`, layout.makeMatterArranger(l, s));
+                types.set(`TYPE${i2}`, { ...l, sampler: s });
             }
 
             return { top: top, sides: sides, types: types };
@@ -65,16 +68,18 @@ export class System extends THREE.Group {
     }
 
     description?: any;
-    locations: Map<string,LocationData>;
-    arranger?: layout.UnitArranger;
+    locations: Map<string, LocationData>;
+    layout?: Layout;
     unitPlane?: THREE.Mesh;
     tileId: number[];
+
+    debugCanvas: HTMLCanvasElement | null = null;
 
     constructor(id: number | string) {
         super();
         this.locations = new Map(); // map of location name -> layout id and units in that location
         this.locations.set("space", { id: 0, units: [] });
-        this.tileId = [0,0];
+        this.tileId = [0, 0];
 
         System.#template.then((parts) => {
             const top = parts.top?.clone();
@@ -85,10 +90,9 @@ export class System extends THREE.Group {
             System.getDescription(id)
                 .then((data) => {
                     this.description = data;
-                    this.arranger = parts.types?.get(data.shipPositionsType);
+                    this.layout = parts.types?.get(data.shipPositionsType);
 
-                    data.planets.forEach((name:string, index:number) =>
-                    {
+                    data.planets.forEach((name: string, index: number) => {
                         let loc = this.locations.get(name);
                         if (loc) {
                             loc.id = index + 1;
@@ -101,14 +105,15 @@ export class System extends THREE.Group {
                     });
                     this.layoutUnits();
 
-                    if (top && "material" in top && "clone")
-                    {
+                    if (top && "material" in top && "clone") {
                         utils
                             .loadTextureAsync(
                                 `${System.#RepoURL}/tiles/${data.imagePath}`
                             )
                             .then((texture) => {
-                                const topMat = (top.material as THREE.MeshStandardMaterial).clone();
+                                const topMat = (
+                                    top.material as THREE.MeshStandardMaterial
+                                ).clone();
                                 topMat.map = texture;
                                 top.material = topMat;
                                 Room.updateRoom();
@@ -159,8 +164,7 @@ export class System extends THREE.Group {
         }
     }
 
-    removeUnit(unit: Unit, relayout = true)
-    {
+    removeUnit(unit: Unit, relayout = true) {
         this.locations.forEach((location) => {
             const idx = location.units.indexOf(unit);
             if (idx != -1) {
@@ -172,37 +176,86 @@ export class System extends THREE.Group {
     }
 
     layoutUnits() {
-        if (this.arranger)
-        {
+        if (this.layout) {
+            const layoutUnits: layout.Unit[][] = [];
+
             this.locations.forEach((location) => {
-                if (location.units.length)
-                {
-                    const layoutUnits = location.units.map(unit => { return { position: {x: 0, y: 0}, angle: 0, width: unit.width, height:unit.length }});
-                    this.arranger?.arrange(location.id, layoutUnits);
-                    for (let i=0; i<layoutUnits.length; ++i)
-                    {
-                        location.units[i].matrix.identity();
-                        location.units[i].position.set(
-                            layoutUnits[i].position.x/1000,
-                            location.units[i].height/2000,
-                            -layoutUnits[i].position.y/1000
-                        );
-                        location.units[i].rotateY(layoutUnits[i].angle);
-                    }
-                }
+                layoutUnits[location.id] = 
+                    location.units.map((unit) => {
+                        return {
+                            position: { x: 0, y: 0 },
+                            angle: 0,
+                            width: unit.width,
+                            height: unit.length,
+                        };
+                    });
+            });
+
+            let ctx = null;
+            if (this.debugCanvas) {
+                ctx = this.debugCanvas.getContext("2d");
+                ctx?.setTransform(
+                    2,
+                    0,
+                    0,
+                    -2,
+                    this.debugCanvas.width / 2,
+                    this.debugCanvas.height / 2
+                );
+                ctx?.clearRect(-60, -60, 120, 120);
+            }
+            if (ctx) {
+                layout.drawSystem(ctx, this.layout);
+                ctx.strokeStyle = "red";
+
+                layout.randomizeLayoutUnits(
+                    this.layout,
+                    layoutUnits,
+                    this.layout.sampler
+                );
+                layout.drawLayoutUnits(ctx, layoutUnits);
+            }
+
+            layout.solve(
+                this.layout,
+                layoutUnits,
+                ctx ? undefined : this.layout.sampler
+            );
+
+            if (ctx) {
+                layout.drawSystem(ctx, this.layout);
+                ctx.strokeStyle = "green";
+                layout.drawLayoutUnits(ctx, layoutUnits);
+            }
+
+            this.locations.forEach((location) => {
+                layoutUnits[location.id].forEach((unit, i) => {
+                    location.units[i].position.set(
+                        unit.position.x / 1000,
+                        location.units[i].height / 2000,
+                        -unit.position.y / 1000
+                    );
+                    location.units[i].setRotationFromAxisAngle(THREE.Object3D.DEFAULT_UP, unit.angle);
+                });
             });
         }
     }
 
-    onObjectSelected()
+    onObjectSelectionLost()
     {
-        document.querySelector(
-            "#system > #name"
-        )!.innerHTML = `${this.description!.name} (${this.id})`;
+        this.debugCanvas = null;
+    }
+
+    onObjectSelected() {
+        document.querySelector("#system > #name")!.innerHTML = `${
+            this.description!.name
+        } (${this.id})`;
         console.log(JSON.stringify(this.description, null, 2));
         document.querySelector(
             "#system > #location"
         )!.innerHTML = `X: ${this.tileId[0]}, Y: ${this.tileId[1]}`;
+
+        this.debugCanvas = document.querySelector("#system > #debug");
         /*
         document.querySelector(
             "#system > #description"

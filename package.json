@@ -10,6 +10,7 @@
         "preview": "vite preview"
     },
     "devDependencies": {
+        "@types/dat.gui": "^0.7.13",
         "@types/matter-js": "^0.19.8",
         "@types/three": "^0.177.0",
         "canvas": "^3.1.2",
@@ -19,6 +20,7 @@
         "vite": "^6.3.5"
     },
     "dependencies": {
+        "dat.gui": "^0.7.9",
         "matter-js": "^0.20.0",
         "three": "^0.177.0"
     }

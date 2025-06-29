@@ -130,6 +130,13 @@ export class Unit extends THREE.Mesh {
             this.length = 
                 (this.geometry.boundingBox.max.z -
                 this.geometry.boundingBox.min.z)*1000;
+
+            // if unit is nearly a box, assume it is a circle.
+            if (Math.abs(this.width-this.length) < 1)
+            {
+                this.width/=2;
+                this.length=0;
+            }
         }
     }
 

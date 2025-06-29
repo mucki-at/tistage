@@ -1,4 +1,4 @@
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { GUI } from "dat.gui";
 import * as THREE from "three";
 import * as unitlayout from "./unitlayout.mts"
 import * as mj from "matter-js";
@@ -10,8 +10,6 @@ canvas.height = 1001;
 canvas.style.backgroundColor = 'lightgray';
 drawingboard.appendChild(canvas);
 const ctx: CanvasRenderingContext2D = canvas.getContext("2d")!;
-ctx.setTransform(10, 0, 0, -10, 50, 50);
-ctx.lineWidth=0.1;
 
 
 let mouseClick : Function | null = null;
@@ -32,21 +30,33 @@ const test:any =
     units: 10,
     width: 10,
     height: 30,
+    circles: 0.3,
+    spread: 0.1
+}
+
+const matterOpts : mj.IBodyDefinition = 
+{
     friction: 0.1,
-    airFriction: 0.1,
-    staticFriction: 1,
+    frictionAir: 0.1,
+    frictionStatic: 1,
     restitution: 0,
 }
 
 const gui = new GUI({ width: 310 });
-gui.add(test, 'fill', 0, 100, 1);
-gui.add(test, "units", 1, 100, 1);
-gui.add(test, "width", 1, 100, 10);
-gui.add(test, "height", 1, 100, 10);
-gui.add(test, "friction", 0, 1, 0.01);
-gui.add(test, "airFriction", 0, 1, 0.01);
-gui.add(test, "staticFriction", 0, 10, 0.1);
-gui.add(test, "restitution", 0, 1, 0.01);
+let f = gui.addFolder("test");
+f.add(test, 'fill', 0, 100, 1);
+f.add(test, "units", 1, 100, 1);
+f.add(test, "width", 1, 100, 10);
+f.add(test, "height", 1, 100, 10);
+f.add(test, "circles", 0, 1, 0.1);
+f.add(test, "spread", 0, 1, 0.1);
+f.open();
+f = gui.addFolder("matter.js");
+f.add(matterOpts, "friction", 0, 1, 0.01);
+f.add(matterOpts, "frictionAir", 0, 1, 0.01);
+f.add(matterOpts, "frictionStatic", 0, 10, 0.1);
+f.add(matterOpts, "restitution", 0, 1, 0.01);
+f.open();
 
 
 function addTest(name: string, fun: Function)
@@ -72,79 +82,52 @@ const planets = [
     },
 ];
 
-const layout = unitlayout.makeSystemLayout(
+const layout = unitlayout.makeHexagonSystem(
     { x: 0, y: 0, radius: radius },
     planets
 );
-const sampler: unitlayout.InspectableSampler =
-    unitlayout.makeRandomSampler(layout);
+const sampler = unitlayout.makeRandomSampler(layout);
 
 //// helpers to draw shape geometries on canvas
 
-function drawPath(
-    ctx: CanvasRenderingContext2D,
-    path: THREE.Path,
-    segments: number = 12,
-    style: string = "black"
-) {
-    const points = path.getPoints(segments);
-    ctx.strokeStyle = style;
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length; ++i)
-        ctx.lineTo(points[i].x, points[i].y);
-    ctx.stroke();
+function randFloat(min:number, max:number)
+{
+    return min + Math.random() * (max-min);
 }
 
-function drawShape(
-    ctx: CanvasRenderingContext2D,
-    shape: THREE.Shape,
-    segments: number = 12,
-    style: string = "green",
-    holeStyle: string = "red"
-) {
-    drawPath(ctx, shape, segments, style);
-    for (let hole of shape.holes) drawPath(ctx, hole, segments, holeStyle);
-}
+function makeRandomUnits(count: number, sampler:unitlayout.Sampler, region:number, angleMin:number=0, angleMax:number=Math.PI*2) : unitlayout.Unit[]
+{
+    const result:unitlayout.Unit[] = [];
 
-function drawShapeGeometryBounds(
-    ctx: CanvasRenderingContext2D,
-    shape: THREE.ShapeGeometry
-) {
-    if (Array.isArray(shape.parameters.shapes) === false) {
-        drawShape(ctx, shape.parameters.shapes, shape.parameters.curveSegments);
-    } else {
-        for (let sub of shape.parameters.shapes)
-            drawShape(ctx, sub, shape.parameters.curveSegments);
+    for (let i = 0; i < count; ++i) {
+        result.push({
+            position: sampler.sample(region),
+            angle: randFloat(angleMin, angleMax),
+            width: randFloat(
+                test.width * (1 - test.spread),
+                test.width * (1 + test.spread)
+            ),
+            height:
+                Math.random() <= test.circles
+                    ? 0
+                    : randFloat(
+                          test.height * (1 - test.spread),
+                          test.height * (1 - test.spread)
+                      ),
+        });
     }
+    return result;
 }
 
-function drawGeometryTriangles(
-    ctx: CanvasRenderingContext2D,
-    shape: THREE.BufferGeometry,
-    style: string = "black"
-) {
-    const triGeom = shape.toNonIndexed()!;
-    const triangles = triGeom.getAttribute("position")!;
-
-    ctx.strokeStyle = style;
-    ctx.beginPath();
-
-    for (let i = 0; i < triangles.count; i += 3) {
-        let v0 = new THREE.Vector3();
-        let v1 = new THREE.Vector3();
-        let v2 = new THREE.Vector3();
-        v0.fromBufferAttribute(triangles, i + 0);
-        v1.fromBufferAttribute(triangles, i + 1);
-        v2.fromBufferAttribute(triangles, i + 2);
-        ctx.moveTo(v0.x, v0.y);
-        ctx.lineTo(v1.x, v1.y);
-        ctx.lineTo(v2.x, v2.y);
-        ctx.lineTo(v0.x, v0.y);
-    }
-
-    ctx.stroke();
-    triGeom.dispose();
+function makeRandomLayoutUnits(): unitlayout.Unit[][]
+{
+    const result = [
+        makeRandomUnits(test.units, sampler, 0),
+        makeRandomUnits(Math.floor(randFloat(0, test.units / 4)), sampler, 1),
+        makeRandomUnits(Math.floor(randFloat(0, test.units / 4)), sampler, 2),
+        makeRandomUnits(Math.floor(randFloat(0, test.units / 4)), sampler, 3),
+    ];
+    return result;
 }
 
 //// matter-js tests
@@ -157,7 +140,6 @@ const mjEngine = mj.Engine.create({enableSleeping: true});
 const mjRender = mj.Render.create({
     canvas: canvas,
     engine: mjEngine,
-//    bounds: { min: {x:-500, y:-500}, max: {x:500, y:500}},
     options: {
         hasBounds: false,
         pixelRatio: 1,
@@ -179,6 +161,7 @@ function stopMJ()
     mj.Render.stop(mjRender);
     mj.Runner.stop(mjRunner);
     mj.Composite.clear(mjEngine.world,false,true);
+    mjEngine.world.gravity.scale = 0;
 
     ctx.setTransform(5, 0, 0, -5, 500, 500);
     ctx.lineWidth = 0.1;
@@ -187,200 +170,226 @@ function stopMJ()
 
 stopMJ();
 
-addTest("mjSimple", ()=>{
-    mj.Composite.clear(mjEngine.world, false, true);
-
-    mjEngine.world.gravity.scale = 1;
-
-    // create two boxes and a ground
-    var boxA = mj.Bodies.rectangle(100, 100, 80, 80);
-    var boxB = mj.Bodies.rectangle(100, 200, 80, 80);
-    var ground = mj.Bodies.rectangle(500, 950, 1000, 60, { isStatic: true });
-
-    // add all of the bodies to the world
-    mj.Composite.add(mjEngine.world, [boxA, boxB, ground]);
-
-    // run the renderer
-    mj.Render.run(mjRender);
-    // run the engine
-    mj.Runner.run(mjRunner, mjEngine);
-});
-
-addTest("mjPackRectangles", ()=>{
-    mj.Composite.clear(mjEngine.world, false, true);
-
-    mjEngine.world.gravity.scale = 0;
-
-    // create a box to fill
-    let box = [
-        mj.Bodies.rectangle(500, 75, 1000, 50, { friction: 0, isStatic: true }),
-        mj.Bodies.rectangle(500, 925, 1000, 50, {
-            friction: 0,
-            isStatic: true,
-        }),
-        mj.Bodies.rectangle(75, 500, 50, 1000, { friction: 0, isStatic: true }),
-        mj.Bodies.rectangle(925, 500, 50, 1000, {
-            friction: 0,
-            isStatic: true,
-        }),
-    ];
-
-    // add all of the bodies to the world
-    mj.Composite.add(mjEngine.world, box);
-
-    // run the renderer
-    mj.Render.run(mjRender);
-    // run the engine
-    mj.Runner.run(mjRunner, mjEngine);
-
-    mouseClick= (x:number,y:number)=>
-    {
-        console.log(`x: ${x}, y: ${y}`);
-        mj.Composite.add(
-            mjEngine.world,
-            mj.Bodies.rectangle(x, y, test.width, test.height, {
-                friction: 0,
-                angle: Math.random() * Math.PI * 2,
-                restitution: 0.2,
-            })
-        );
-        mj.Composite.allBodies(mjEngine.world).forEach((body) => mj.Sleeping.set(body, false));
-    }
-});
-
-
-addTest("mjArrangeLive", () => {
-    mj.Composite.clear(mjEngine.world, false, true);
-    mjEngine.world.gravity.scale = 0;
-
-    const boundaryOptions = {
-        friction: test.friction,
-        frictionAir: test.airFriction,
-        frictionStatic: test.staticFriction,
-        restitution: test.restitution,
-        isStatic: true,
-    };
-
-    const bounds = new Array<mj.Body>(layout.bounds.length);
-    bounds[0] = unitlayout.mjLineToBounds(
-        layout.bounds[layout.bounds.length - 1],
-        layout.bounds[0],
-        boundaryOptions
-    );
-    for (let i = 1; i < layout.bounds.length; ++i) {
-        bounds[i] = unitlayout.mjLineToBounds(
-            layout.bounds[i - 1],
-            layout.bounds[i],
-            boundaryOptions
-        );
-    }
-
-    const planets = layout.planets.map((planet) =>
-        mj.Bodies.circle(planet.x, planet.y, planet.radius, { ...boundaryOptions, slop:2 })
-    );
-
-    mj.Composite.add(mjEngine.world, bounds);
-    mj.Composite.add(mjEngine.world, planets);
-
-    const units=new Array<unitlayout.LayoutUnit>(test.units);
-    for (let i=0; i<units.length; ++i)
-    {
-        units[i]={ position: sampler.sample(0), angle: Math.random() * 2 * Math.PI, width:test.width, height: test.height };
-    }
-    const collisionUnits = units.map((unit) => {
-        const pos = unit.position;
-        return mj.Bodies.rectangle(pos.x, pos.y, unit.width, unit.height, {
-            friction: test.friction,
-            frictionAir: test.airFriction,
-            frictionStatic: test.staticFriction,
-            restitution: test.restitution,
-            angle: unit.angle,
-            sleepThreshold: 60,
-        });
-    });
-
-    mj.Composite.add(mjEngine.world, collisionUnits);
-
+function startMJ()
+{
     // run the renderer
     mj.Render.lookAt(mjRender, mj.Composite.allBodies(mjEngine.world));
     mj.Render.run(mjRender);
     // run the engine
     mj.Runner.run(mjRunner, mjEngine);
+}
+
+addTest("mjSimple", ()=>{
+    mjEngine.world.gravity.scale = 0.01;
+
+    // create two boxes and a ground
+    var boxA = mj.Bodies.rectangle(0, -100, 80, 80);
+    var boxB = mj.Bodies.rectangle(0, -200, 80, 80);
+    var ground = mj.Bodies.rectangle(0, 0, 100, 60, {
+        ...matterOpts,
+        isStatic: true,
+    });
+
+    mj.Composite.add(mjEngine.world, [boxA, boxB, ground]);
+
+    startMJ();
+});
+
+addTest("mjPackRectangles", ()=>{
+    // create a box to fill
+    let box = [
+        mj.Bodies.rectangle(0, -55, 120, 10, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle(0, 55, 120, 10, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle(-55, 0, 10, 120, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle(55, 0, 10, 120, { ...matterOpts, isStatic: true }),
+    ];
+
+    // add all of the bodies to the world
+    mj.Composite.add(mjEngine.world, box);
+
+    startMJ();
+
+    mouseClick = (x: number, y: number) => {
+        console.log(`x: ${x}, y: ${y}`);
+        mj.Composite.add(
+            mjEngine.world,
+            mj.Bodies.rectangle((x-500)/10, (y-500)/10, test.width, test.height, {
+                ...matterOpts,
+                angle: Math.random() * Math.PI * 2,
+                restitution: 0.2,
+            })
+        );
+        mj.Composite.allBodies(mjEngine.world).forEach((body) =>
+            mj.Sleeping.set(body, false)
+        );
+    };
 });
 
 
+addTest("mjConstraintsPacker", () => {
+    // create a box to fill
+    let box = [
+        mj.Bodies.rectangle(0, -55, 120, 10, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle(0, 55, 120, 10, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle(-55, 0, 10, 120, { ...matterOpts, isStatic: true }),
+        mj.Bodies.rectangle( 55, 0, 10, 120, { ...matterOpts, isStatic: true }),
+    ];
 
-const mjArranger = unitlayout.makeMatterArranger(layout);
-addTest("arrangeMJ", () => {
-    testArrange(mjArranger);
+    // add all of the bodies to the world
+    mj.Composite.add(mjEngine.world, box);
+
+    // create some items
+    for (let i = 0; i < test.units; ++i) {
+        let body = mj.Bodies.circle(Math.random()*100-50, Math.random()*100-50, test.width,
+        {
+            ...matterOpts,
+            angle: Math.random() * 2 * Math.PI
+        });
+        let constraint = mj.Constraint.create({
+            bodyA: body,
+            pointA: { x: 0, y: 0 },
+            pointB: { x: 0, y: 0 },
+            length: 0,
+            damping: 0,
+            stiffness: 0.002
+        });
+        mj.Composite.add(mjEngine.world, [body, constraint]);
+    }
+
+    startMJ();
+
 });
+
+function mjLineToBounds(
+    a: unitlayout.PointLike,
+    b: unitlayout.PointLike,
+    options: mj.IBodyDefinition
+) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const overshoot = 0.2;
+    const thickness = 0.5;
+
+    const tr = { x: b.x + dx * overshoot, y: b.y + dy * overshoot };
+    const br = { x: a.x - dx * overshoot, y: a.y - dy * overshoot };
+    const tl = { x: tr.x + dy * thickness, y: tr.y - dx * thickness };
+    const bl = { x: br.x + dy * thickness, y: br.y - dx * thickness };
+
+    const cx = (tr.x + bl.x) / 2;
+    const cy = (tr.y + bl.y) / 2;
+
+    return mj.Bodies.fromVertices(cx, cy, [[tr, br, bl, tl]], {
+        ...options,
+        isStatic: true,
+    });
+};
+
+function mjUnitToBody(unit:unitlayout.Unit)
+{
+    if ((unit.height) && (unit.height>0))
+    {
+        return mj.Bodies.rectangle(
+            unit.position.x,
+            unit.position.y,
+            unit.width,
+            unit.height,
+            { ...matterOpts, angle: unit.angle }
+        );
+    }
+    else
+    {
+        return mj.Bodies.circle(unit.position.x, unit.position.y, unit.width, {
+            ...matterOpts,
+            angle: unit.angle,
+        });
+    }
+}
+
+addTest("mjArrangeLive", () => {
+    const bounds = new Array<mj.Body>(layout.bounds.length);
+    bounds[0] = mjLineToBounds(
+        layout.bounds[layout.bounds.length - 1],
+        layout.bounds[0],
+        { ...matterOpts, isStatic: true }
+    );
+    for (let i = 1; i < layout.bounds.length; ++i) {
+        bounds[i] = mjLineToBounds(
+            layout.bounds[i - 1],
+            layout.bounds[i],
+            { ...matterOpts, isStatic: true }
+        );
+    }
+
+    mj.Composite.add(mjEngine.world, bounds);
+
+
+    const units = makeRandomLayoutUnits();
+    unitlayout.randomizeLayoutUnits(layout, units, sampler);
+
+    // step 1: add and solve all planetary units
+    units.forEach((u, i) => {
+        if ((i>0) && (layout.planets[i-1]))
+        {
+            const p = layout.planets[i-1];
+            for (const unit of u)
+            {
+                const body = mjUnitToBody(unit);
+                const constraint = mj.Constraint.create({
+                    bodyA: body,
+                    pointA: { x: 0, y: 0 },
+                    pointB: { x: p.x, y: p.y },
+                    length: p.radius/5,
+                    damping: 0.1,
+                    stiffness: 0.002,
+                });
+                mj.Composite.add(mjEngine.world, [body, constraint]);
+            }
+        }
+    });
+
+    startMJ();
+
+    setTimeout(() => {
+        mj.Composite.allBodies(mjEngine.world).forEach((body) => { body.isStatic=true; });
+        mj.Composite.clear(mjEngine.world, true, true);
+        
+        for (const unit of units[0])
+        {
+            mj.Composite.add(mjEngine.world, mjUnitToBody(unit));
+        }
+        
+    }, 1000);
+
+});
+
 
 
 const spawnArea = 3 * Math.sqrt(3) * radius * radius / 2.0 - 3.0 * planetRadius*planetRadius*Math.PI;
 
-
-addTest("bounds", ()=>{
-    if (sampler.space) {
-        const geom = sampler.space.geometry;
-        if ("parameters" in geom) {
-            drawShapeGeometryBounds(ctx, geom as THREE.ShapeGeometry);
-        } else {
-            drawGeometryTriangles(ctx,geom);
-        }
-    }
-});
-
-addTest("triangles", ()=>{
-    ctx.clearRect(-500, -500, 1001, 1001);
-    if (sampler.space) {
-        drawGeometryTriangles(ctx, sampler.space.geometry);
-    }
-});
-    
+  
 addTest("randomFill", () =>{
     const pointCount = (spawnArea * test.fill) / 100;
     for (let i = 0; i < pointCount; ++i)
     {
         const pos = sampler.sample(0);
+        ctx.fillStyle="black";
         ctx.fillRect(pos.x, pos.y, 1, 1);
     }
 });
 
-function testArrange(
-    arranger: unitlayout.UnitArranger)
-{
-    test.bounds();
+addTest("solve", () => {
+    unitlayout.drawSystem(ctx, layout);
 
-    const units=new Array<unitlayout.LayoutUnit>(test.units);
-    for (let i=0; i<units.length; ++i)
-    {
-        units[i]={ position: sampler.sample(0), angle: Math.random()*2*Math.PI, width:test.width, height:test.height };
-    }
+    const units = makeRandomLayoutUnits();
+
+    unitlayout.randomizeLayoutUnits(layout, units, sampler);
 
     ctx.strokeStyle = "red";
-    for (let i = 0; i < units.length; ++i)
-    {
-        ctx.save();
-        ctx.translate(units[i].position.x, units[i].position.y);
-        ctx.rotate(units[i].angle);
-        ctx.strokeRect(-units[i].width/2, -units[i].height/2, units[i].width, units[i].height);
-        ctx.restore();
-    }
+    unitlayout.drawLayoutUnits(ctx, units);
 
-    arranger.arrange(0,units);
+    unitlayout.solve(layout, units, undefined);
 
     ctx.strokeStyle = "green";
-    for (let i = 0; i < units.length; ++i) {
-        ctx.save();
-        ctx.translate(units[i].position.x, units[i].position.y);
-        ctx.rotate(units[i].angle);
-        ctx.strokeRect(
-            -units[i].width / 2,
-            -units[i].height / 2,
-            units[i].width,
-            units[i].height
-        );
-        ctx.restore();
-    }
-}
+    unitlayout.drawLayoutUnits(ctx, units);
+});
 
