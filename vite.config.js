@@ -1,4 +1,6 @@
 /** @type {import('vite').UserConfig} */ 
+import UnpluginTypia from '@ryoppippi/unplugin-typia/vite'
+ 
 export default {
     base: "",
     build:
@@ -13,7 +15,9 @@ export default {
                 }
             }
         }
-    }
-
+    },
+    plugins: [
+        UnpluginTypia({ /* options */ })
+      ],
     // config options
 };

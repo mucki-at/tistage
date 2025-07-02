@@ -1,0 +1,21 @@
+{
+    "version": 1,
+    "default": "ttpg",
+    "definitions":
+    {
+        "saunick" : 
+        {
+            "name" : "Saunick",
+            "description" : "<a href=\"https://www.thingiverse.com/thing:4191414\">Twilight Imperium 4 ship models</a> by Saunick",
+            "copyright" : "licensed under the <a href=\"https://creativecommons.org/licenses/by/4.0/\">Creative Commons - Attribution</a> license",
+            "url" : "saunick.glb"
+        },
+        "ttpg" :
+        {
+            "name": "TTPG",
+            "description": "<a href=\"https://github.com/TI4-Online/TI4-TTPG\">Twilight Imperium 4 ship models</a> by TI4-TTPG project",
+            "copyright": "unclear, currently no license",
+            "url": "ttpg.glb"
+        }
+    }
+}

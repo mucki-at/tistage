@@ -8,7 +8,7 @@ export class Game {
         ca: "cruiser",
         cv: "carrier",
         dd: "destroyer",
-        dn: "dreadnaught",
+        dn: "dreadnought",
         ff: "fighter",
         fs: "flagship",
         gf: "infantry",

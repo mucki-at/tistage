@@ -1,8 +1,10 @@
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js"
 import { Room } from "./room.mts"
 import { Table } from "./table.mts"
 // @ts-expect-error
 import { Game } from "./game.mjs";
+import { Unit } from "./units.mjs";
+import { LoadTemplateDefinitionsAsync } from "./template.mts";
 
 import "./main.css"
 
@@ -17,27 +19,55 @@ room.add(table);
 
 const game = new Game(table);
 
-let gameSettings = {
-    id: urlParams.get("id") ?? "",
-    reload: function () {
-        var url = "pbd.json";
-        if (gameSettings.id != "") {
-            url = `https://ti4.westaddisonheavyindustries.com/webdata/${gameSettings.id}/${gameSettings.id}.json`;
+LoadTemplateDefinitionsAsync("units.json").then((defs) =>
+{
+    const unitDefs = defs;
+    const unitOptions = Object.getOwnPropertyNames(unitDefs.definitions);
+
+    function updateModels(name: string) {
+        const def = unitDefs.definitions[name];
+        if (def) {
+            Unit.models.LoadTemplate(def.url);
+            Unit.models.oneshot({}, relayout);
+    
+            document.querySelector(
+                "#info > #modelDesc"
+            )!.innerHTML = `${def.description} (&copy; ${def.copyright})`;
         }
-        game.reload(url);
-    },
-    relayout: function () {
+    }
+    
+    function relayout() {
         table.relayout();
         Room.updateRoom();
-    },
-};
+    }
+    
+    let gameSettings = {
+        id: urlParams.get("id") ?? "",
+        reload: function () {
+            var url = "pbd.json";
+            if (gameSettings.id != "") {
+                url = `https://ti4.westaddisonheavyindustries.com/webdata/${gameSettings.id}/${gameSettings.id}.json`;
+            }
+            game.reload(url);
+        },
+    
+        models: unitDefs.default,
+        relayout: relayout
+    };
+    
+    const panel = new GUI({ width: 310 });
+    const folder1 = panel.addFolder("Game");
+    folder1.add(gameSettings, "id");
+    folder1.add(gameSettings, "reload");
+    const folder2 = panel.addFolder("Units");
+    folder2.add(gameSettings, "models", unitOptions).onFinishChange(updateModels);
+    folder2.add(gameSettings, "relayout");
+    
+    updateModels(unitDefs.default);
+    gameSettings.reload();
+});
 
-const panel = new GUI({ width: 310 });
-const folder1 = panel.addFolder("Game");
-folder1.add(gameSettings, "id");
-folder1.add(gameSettings, "reload");
-const folder2 = panel.addFolder("Units");
-folder2.add(gameSettings, "relayout");
+Unit.colors.LoadTemplate("colors.glb");
 
-gameSettings.reload();
+
 

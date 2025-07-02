@@ -3,16 +3,10 @@ import { TextureLoader, GLTFExporter } from "node-three-gltf"
 import fs from "node:fs"
 import { createCanvas } from "canvas";
 
-let templateName = process.argv[2];
-if (!templateName) {
-    console.log(`Usage: node makeAsyncTIColors.js <template> <outputfile>`);
-    process.exit(-1);
-}
-
-const outname = process.argv[3];
+const outname = process.argv[2];
 if (!outname)
 {
-    console.log(`Usage: node makeAsyncTIColors.js <template> <outputfile>`);
+    console.log(`Usage: node makeAsyncTIColors.js <outputfile>`);
     process.exit(-1);
 }
 
@@ -26,9 +20,6 @@ function loadJson(url)
             return response.json(); // Parse the JSON from the response
         });    
 }
-
-// load material template
-const template = JSON.parse(fs.readFileSync(templateName));
 
 // build name map
 const colors = new Map();
@@ -47,7 +38,7 @@ for (let def of solidColors)
         fallback: def.hue,
         image: null,
         color: `rgb(${def.primaryColor.red},${def.primaryColor.green},${def.primaryColor.blue})`,
-        material: new THREE.MeshStandardMaterial(template),
+        material: new THREE.MeshStandardMaterial(),
     };
     color.material.color=new THREE.Color(color.color);
     colors.set(def.name, color);
@@ -87,10 +78,13 @@ for (let def of gradientColors) {
             colorSpace: "srgb",
         }),
         color: `rgb(${def.primaryColor.red},${def.primaryColor.green},${def.primaryColor.blue})`,
-        material: new THREE.MeshStandardMaterial(template),
+        material: new THREE.MeshStandardMaterial(),
     };
     const png = canvas.toDataURL();
     color.material.map = await loader.loadAsync(png);
+    color.material.map.colorSpace = THREE.SRGBColorSpace;
+    color.material.map.wrapS = THREE.ClampToEdgeWrapping;
+    color.material.map.wrapT = THREE.ClampToEdgeWrapping;
     colors.set(def.name, color);
 }
 
@@ -139,10 +133,13 @@ for (let def of splitColors) {
             colorSpace: "srgb",
         }),
         color: left.color,
-        material: new THREE.MeshStandardMaterial(template),
+        material: new THREE.MeshStandardMaterial(),
     };
     const png = canvas.toDataURL();
     color.material.map = await loader.loadAsync(png);
+    color.material.map.colorSpace = THREE.SRGBColorSpace;
+    color.material.map.wrapS = THREE.ClampToEdgeWrapping;
+    color.material.map.wrapT = THREE.ClampToEdgeWrapping;
     colors.set(def.name, color);
 }
 

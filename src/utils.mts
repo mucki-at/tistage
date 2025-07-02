@@ -72,3 +72,18 @@ export function loadJsonAsync(url:string)
             return response.json(); // Parse the JSON from the response
         });
 }
+
+export function extractColorInformation(material : THREE.Material)
+{
+    let color = ErrorMaterial.color;
+    let map = ErrorMaterial.map;
+    if (("color" in material) && (material.color instanceof THREE.Color))
+    {
+        color = material.color;
+    }
+    if (("map" in material) && (material.map instanceof THREE.Texture))
+    {
+        map = material.map;
+    }
+    return { color: color, map: map };
+}
