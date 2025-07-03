@@ -7,6 +7,7 @@
     "dev": "vite",
     "makeColors": "node private/makeAsyncTIColors.mjs public/colors.glb",
     "build": "tsc && vite build",
+    "postcheckout": "npm install && npx typia setup --manager npm && ts-patch install",
     "preview": "vite preview",
     "prepare": "ts-patch install"
   },
