@@ -149,6 +149,6 @@ export class Table extends THREE.Mesh {
         const systems = this.children.filter((obj) =>
             Object.hasOwn(obj, "tileId")
         );
-        systems.forEach((system) => (system as System).layoutUnits());
+        systems.forEach((system) => (system as System).layoutItems());
     }
 }

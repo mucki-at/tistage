@@ -2,7 +2,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js"
 import { Room } from "./room.mts"
 import { Table } from "./table.mts"
 import { loadPbdGameStateAsync } from "./game.mts";
-import { Unit } from "./units.mjs";
+import { Unit } from "./units.mts";
+import { Token } from "./tokens.mts";
 import { LoadTemplateDefinitionsAsync } from "./template.mts";
 
 import "./main.css"
@@ -37,24 +38,26 @@ LoadTemplateDefinitionsAsync("units.json").then((defs) =>
         table.relayout();
         Room.updateRoom();
     }
+
+    function reload()
+    {
+        var name = "pbd.json";
+        if (gameSettings.id != "") {
+            name = gameSettings.id;
+        }
+        loadPbdGameStateAsync(name).then((game) => game.setupTable(table));
+    }
     
     let gameSettings = {
         id: urlParams.get("id") ?? "",
-        reload: function () {
-            var name = "pbd.json";
-            if (gameSettings.id != "") {
-                name = gameSettings.id
-            }
-            loadPbdGameStateAsync(name).then((game) => game.setupTable(table));
-        },
-    
+        reload: reload,
         models: unitDefs.default,
         relayout: relayout
     };
     
     const panel = new GUI({ width: 310 });
     const folder1 = panel.addFolder("Game");
-    folder1.add(gameSettings, "id");
+    folder1.add(gameSettings, "id").name("AsyncTI name").onFinishChange(reload);
     folder1.add(gameSettings, "reload");
     const folder2 = panel.addFolder("Units");
     folder2.add(gameSettings, "models", unitOptions).onFinishChange(updateModels);
@@ -64,6 +67,7 @@ LoadTemplateDefinitionsAsync("units.json").then((defs) =>
     gameSettings.reload();
 });
 
+Token.models.LoadTemplate("tokens.glb");
 Unit.colors.LoadTemplate("colors.glb");
 
 

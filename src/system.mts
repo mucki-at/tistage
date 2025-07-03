@@ -1,13 +1,14 @@
 import * as THREE from "three";
 import { Room } from "./room.mts";
 import { Unit } from "./units.mts";
+import { Token } from "./tokens.mts";
 import * as utils from "./utils.mts";
 import * as layout from "./unitlayout.mts";
 
 interface LocationData
 {
     id: number,
-    units: Unit[]
+    items: (Unit | Token)[],
 }
 
 type Layout = layout.System & { sampler: layout.Sampler };
@@ -77,7 +78,7 @@ export class System extends THREE.Group {
     constructor(id: number | string) {
         super();
         this.locations = new Map(); // map of location name -> layout id and units in that location
-        this.locations.set("space", { id: 0, units: [] });
+        this.locations.set("space", { id: 0, items: [] });
         this.tileId = [0, 0];
 
         System.#template.then((parts) => {
@@ -98,11 +99,11 @@ export class System extends THREE.Group {
                         } else {
                             this.locations.set(name, {
                                 id: index + 1,
-                                units: [],
+                                items: [],
                             });
                         }
                     });
-                    this.layoutUnits();
+                    this.layoutItems();
 
                     if (top && "material" in top && "clone") {
                         utils
@@ -135,7 +136,7 @@ export class System extends THREE.Group {
         });
     }
 
-    addUnit(unit: Unit, location = "space", relayout = true) {
+    addItem(item: Unit | Token, location = "space", relayout = true) {
         if (!this.unitPlane) {
             const shadowGeom = new THREE.CircleGeometry(0.058, 6, 0);
             shadowGeom.rotateX(-Math.PI / 2);
@@ -149,45 +150,44 @@ export class System extends THREE.Group {
             this.add(this.unitPlane);
         }
 
-        this.unitPlane.add(unit);
+        this.unitPlane.add(item);
 
         let loc = this.locations.get(location);
         if (loc) {
-            loc.units.push(unit);
-            if (relayout) this.layoutUnits();
+            loc.items.push(item);
+            if (relayout) this.layoutItems();
         } else {
             this.locations.set(location, {
                 id: 0,
-                units: [unit],
+                items: [item],
             });
         }
     }
 
-    removeUnit(unit: Unit, relayout = true) {
+    removeItem(item: Unit | Token, relayout = true) {
         this.locations.forEach((location) => {
-            const idx = location.units.indexOf(unit);
+            const idx = location.items.indexOf(item);
             if (idx != -1) {
-                unit.removeFromParent();
-                location.units.splice(idx, 1);
-                if (relayout) this.layoutUnits();
+                item.removeFromParent();
+                location.items.splice(idx, 1);
+                if (relayout) this.layoutItems();
             }
         });
     }
 
-    layoutUnits() {
+    layoutItems() {
         if (this.layout) {
-            const layoutUnits: layout.Unit[][] = [];
+            const layoutItems: layout.Unit[][] = [];
 
             this.locations.forEach((location) => {
-                layoutUnits[location.id] = 
-                    location.units.map((unit) => {
-                        return {
-                            position: { x: 0, y: 0 },
-                            angle: 0,
-                            width: unit.width,
-                            height: unit.length,
-                        };
-                    });
+                layoutItems[location.id] = location.items.map((item) => {
+                    return {
+                        position: { x: 0, y: 0 },
+                        angle: 0,
+                        width: item.width,
+                        height: item.length,
+                    };
+                });
             });
 
             let ctx = null;
@@ -209,43 +209,50 @@ export class System extends THREE.Group {
 
                 layout.randomizeLayoutUnits(
                     this.layout,
-                    layoutUnits,
+                    layoutItems,
                     this.layout.sampler
                 );
-                layout.drawLayoutUnits(ctx, layoutUnits);
+                layout.drawLayoutUnits(ctx, layoutItems);
             }
 
             layout.solve(
                 this.layout,
-                layoutUnits,
+                layoutItems,
                 ctx ? undefined : this.layout.sampler
             );
 
             if (ctx) {
                 layout.drawSystem(ctx, this.layout);
                 ctx.strokeStyle = "green";
-                layout.drawLayoutUnits(ctx, layoutUnits);
+                layout.drawLayoutUnits(ctx, layoutItems);
             }
 
             this.locations.forEach((location) => {
-                layoutUnits[location.id].forEach((unit, i) => {
-                    location.units[i].position.set(
+                layoutItems[location.id].forEach((unit, i) => {
+                    location.items[i].position.set(
                         unit.position.x / 1000,
-                        location.units[i].height / 2000,
+                        location.items[i].height / 2000,
                         -unit.position.y / 1000
                     );
-                    location.units[i].setRotationFromAxisAngle(THREE.Object3D.DEFAULT_UP, unit.angle);
-                    if (location.units[i].sustained)
+                    location.items[i].setRotationFromAxisAngle(
+                        THREE.Object3D.DEFAULT_UP,
+                        unit.angle
+                    );
+                    if ("sustained" in location.items[i])
                     {
-                        location.units[i].rotateZ(Math.PI + THREE.MathUtils.randFloatSpread(Math.PI/6));
+                        if (location.items[i].sustained) {
+                            location.items[i].rotateZ(
+                                Math.PI +
+                                    THREE.MathUtils.randFloatSpread(Math.PI / 6)
+                            );
+                        }
                     }
                 });
             });
         }
     }
 
-    onObjectSelectionLost()
-    {
+    onObjectSelectionLost() {
         this.debugCanvas = null;
     }
 

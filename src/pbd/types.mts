@@ -121,7 +121,7 @@ export type FactionUnits = {
 };
 
 export type PlanetEntityData = {
-  controlledBy: string;
+  controlledBy: string | null;
   entities: {
     [factionName: string]: EntityData[];
   };

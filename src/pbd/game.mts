@@ -1,8 +1,9 @@
-import { Table } from "../table.mjs"
-import { System } from "../system.mjs"
-import { Unit } from "../units.mjs";
+import { Table } from "../table.mts"
+import { System } from "../system.mts"
+import { Unit } from "../units.mts";
+import { FactionToken } from "../tokens.mts";
 import { type GameState } from "../game.mts";
-import * as utils from "../utils.mjs";
+import * as utils from "../utils.mts";
 import * as pbd from "./types.mts";
 import { assertEquals } from "typia";
 
@@ -104,17 +105,29 @@ export class Game implements GameState {
                                     );
                                     if (unitDef.sustained) unit.sustained = true;
                                     unit.setColor(color);
-                                    system.addUnit(unit, "space");
+                                    system.addItem(unit, "space");
                                 }
                             }
                         }
                     });
                 }
-                for (const [name, planet] of Object.entries(data.planets)) {
+                for (const faction of data.ccs)
+                {
+                    const token=new FactionToken("command", faction);
+                    system.addItem(token, "space");
+                }
+                for (const [name, planet] of Object.entries(data.planets))
+                {
+                    let needsOwnerToken = true;
                     for (const [faction, units] of Object.entries(
                         planet.entities
                     )) {
                         const color = factionColors[faction];
+                        if ((faction == planet.controlledBy) && (units.length>0))
+                        {
+                            needsOwnerToken = false;
+                        }
+
                         units.forEach((unitDef) => {
                             if (unitDef.entityType == "unit") {
                                 for (let i = 0; i < unitDef.count; ++i) {
@@ -124,10 +137,16 @@ export class Game implements GameState {
                                     if (unitDef.sustained)
                                         unit.sustained = true;
                                     unit.setColor(color);
-                                    system.addUnit(unit, name);
+                                    system.addItem(unit, name);
                                 }
                             }
                         });
+                    }
+
+                    if ((needsOwnerToken) && (planet.controlledBy != null))
+                    {
+                        const token = new FactionToken("owner", planet.controlledBy);
+                        system.addItem(token, name);
                     }
                 }
             }

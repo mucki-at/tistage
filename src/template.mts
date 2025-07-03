@@ -67,4 +67,25 @@ export abstract class TemplateLoader<T> {
     }
 }
 
+export abstract class TemplateCache<T> {
+    #cache: Map<string, Promise<T>> = new Map<string, Promise<T>>();
+
+    abstract handleLoadAsync(name: string): Promise<T>;
+
+    Get(name: string): Promise<T>
+    {
+        if (this.#cache.has(name))
+        {
+            return this.#cache.get(name) as Promise<T>;
+        }
+        else
+        {
+            const result=this.handleLoadAsync(name);
+            this.#cache.set(name, result);
+            return result;
+        }
+     }
+}
+
+
 
