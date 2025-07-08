@@ -1,0 +1,20 @@
+{
+    "version": 1,
+    "default": "asyncti",
+    "definitions": {
+        "asyncti":
+        {
+            "name": "AsyncTI4",
+            "description": "Images and metadata from <a href=\"https://asyncti4.github.io\">Async TI4 project</a>",
+            "copyright": "unclear, currently no license",
+            "url": "pbd/systems.json"
+        },
+        "ttpg":
+        {
+            "name": "TTPG",
+            "description": "Images and metadata from <a href=\"https://github.com/TI4-Online/TI4-TTPG\">TI4-TTPG project</a>",
+            "copyright": "unclear, currently no license",
+            "url": "ttpg/systems.json"
+        }
+    }
+}

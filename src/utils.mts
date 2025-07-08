@@ -34,6 +34,28 @@ export function loadGltfMaterialAsync(url : string) : Promise<THREE.Material>
         });
 }
 
+export function loadGltfMeshesAsync(url: string): Promise<Map<string,THREE.Mesh>> {
+    return gltf
+        .loadAsync(url)
+        .then((result) => {
+            const template = new Map<string, THREE.Mesh>();
+            result.scene.children.forEach((obj) => {
+                if (obj instanceof THREE.Mesh)
+                {
+                    template.set(obj.userData.name.split(".")[0], obj);
+                }
+
+            });
+            return template;            
+        })
+        .catch((e) => {
+            console.log(`Failed to load GLTF file '${url}': ${e.message}`);
+            return new Map<string, THREE.Mesh>();
+        });
+}
+
+
+
 export const textures = new THREE.TextureLoader();
 
 export function loadTextureAsync(
@@ -61,6 +83,13 @@ export function sleeper(ms : number) {
     };
 }
 
+export function makePromise<T>(thing: T) : Promise<T>
+{
+    return new Promise<T>((resolve, _) => {
+            resolve(thing);
+        });
+}
+
 export function loadJsonAsync(url:string)
 {
     // Example: Load a JSON file using fetch
@@ -86,4 +115,27 @@ export function extractColorInformation(material : THREE.Material)
         map = material.map;
     }
     return { color: color, map: map };
+}
+
+export function replaceColorInformation(material: THREE.Material | THREE.Material[], color: THREE.Color | undefined, map: THREE.Texture | undefined, clone: boolean) : typeof material
+{
+    if (Array.isArray(material)) {
+        return material.map((mat) =>
+            replaceColorInformation(mat, color, map, clone)
+        ) as THREE.Material[];
+    }
+    else
+    {
+        if (clone) {
+            material = material.clone();
+        }
+
+        if (color && "color" in material) {
+            material.color = color;
+        }
+        if (map && "map" in material) {
+            material.map = map;
+        }
+        return material;            
+    }
 }

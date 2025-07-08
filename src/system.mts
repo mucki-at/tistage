@@ -4,134 +4,177 @@ import { Unit } from "./units.mts";
 import { Token } from "./tokens.mts";
 import * as utils from "./utils.mts";
 import * as layout from "./unitlayout.mts";
+import { TemplateLoader, TemplateCache } from "./template.mts";
+import { assertEquals } from "typia";
 
 interface LocationData
 {
-    id: number,
-    items: (Unit | Token)[],
+    id: number;
+    items: (Unit | Token)[];
 }
 
 type Layout = layout.System & { sampler: layout.Sampler };
 
-export class System extends THREE.Group {
-    static #RepoURL =
-        "https://raw.githubusercontent.com/AsyncTI4/TI4_map_generator_bot/refs/heads/master/src/main/resources";
+interface SystemDefinition {
+    name: string;
+    planets: string[];
+    type: string;
+    image: string;
+}
 
-    static #template = utils.gltf
-        .loadAsync("system.glb")
-        .then((result) => {
-            const top = result.scene.getObjectByName("top");
-            const sides = result.scene.getObjectByName("sides");
+interface SystemDefinitions {
+    modelUrl: string;
+    imageUrl: string;
+    definitions: Record<string,SystemDefinition>;
+}
 
-            const boundsObj = result.scene.getObjectByName("bounds");
-            const bounds = {
-                x: (boundsObj?.position.x ?? 0) * 1000,
-                y: (boundsObj?.position.z ?? 0) * 1000,
-                radius:
-                    (parseFloat(boundsObj?.userData.radius) ?? 0.058) * 1000,
-            };
+interface Template {
+    top?: THREE.Object3D;
+    sides?: THREE.Object3D;
+    types?: Map<string, Layout>;
+}
 
-            let types = new Map<string, Layout>();
-            for (let i = 1; i <= 15; ++i) {
-                const i2 = i.toString().padStart(2, "0");
-                const i3 = i.toString().padStart(3, "0");
+class TextureCache extends TemplateCache<THREE.Texture> {
+    baseUrl: string = "";
+    handleLoadAsync(name: string): Promise<THREE.Texture> {
+        return utils.loadTextureAsync(this.baseUrl + name);
+    }
+};
 
-                let planets = [];
-                for (let j = 0; j < 3; ++j) {
-                    const p = result.scene.getObjectByName(`planet${j}${i3}`);
-                    if (p) {
-                        planets[j] = {
-                            x: p.position.x * 1000,
-                            y: -p.position.z * 1000,
-                            radius: parseFloat(p.userData.radius) * 1000,
-                        };
+export class SystemLoader extends TemplateLoader<SystemDefinition>
+{
+    template: Promise<Template> = utils.makePromise({top:undefined, sides:undefined, types:undefined});
+    textures: TextureCache = new TextureCache();
+
+    handleLoadTemplateAsync(url: string) {
+        return utils.loadJsonAsync(url).then((json) =>
+        {
+            const systems = assertEquals<SystemDefinitions>(json);
+            this.textures.baseUrl = systems.imageUrl;
+            this.textures.Clear();
+
+            this.template=utils.gltf
+                .loadAsync(systems.modelUrl)
+                .then((result) => {
+                    const top = result.scene.getObjectByName("top");
+                    const sides = result.scene.getObjectByName("sides");
+
+                    const boundsObj = result.scene.getObjectByName("bounds");
+                    const bounds = {
+                        x: (boundsObj?.position.x ?? 0) * 1000,
+                        y: (boundsObj?.position.z ?? 0) * 1000,
+                        radius:
+                            (parseFloat(boundsObj?.userData.radius) ?? 0.058) *
+                            1000,
+                    };
+
+                    let types = new Map<string, Layout>();
+                    for (let i = 1; i <= 15; ++i) {
+                        const i2 = i.toString().padStart(2, "0");
+                        const i3 = i.toString().padStart(3, "0");
+
+                        let planets = [];
+                        for (let j = 0; j < 3; ++j) {
+                            const p = result.scene.getObjectByName(
+                                `planet${j}${i3}`
+                            );
+                            if (p) {
+                                planets[j] = {
+                                    x: p.position.x * 1000,
+                                    y: -p.position.z * 1000,
+                                    radius:
+                                        parseFloat(p.userData.radius) * 1000,
+                                };
+                            }
+                        }
+
+                        const l = layout.makeHexagonSystem(bounds, planets);
+                        const s = layout.makeRandomSampler(l);
+                        types.set(`TYPE${i2}`, { ...l, sampler: s });
                     }
-                }
 
-                const l = layout.makeHexagonSystem(bounds, planets);
-                const s = layout.makeRandomSampler(l);
-                types.set(`TYPE${i2}`, { ...l, sampler: s });
-            }
-
-            return { top: top, sides: sides, types: types };
-        })
-        .catch((reason) => {
-            console.error("Error loading System.glb:", reason);
-            return { top: undefined, sides: undefined, types: undefined };
+                    return { top: top, sides: sides, types: types };
+                })
+                .catch((reason) => {
+                    console.error("Error loading System.glb:", reason);
+                    return {
+                        top: undefined,
+                        sides: undefined,
+                        types: undefined,
+                    };
+                });
+            
+            return new Map<string,SystemDefinition>(Object.entries(systems.definitions));
         });
-
-    static getDescription(systemId: number | string) {
-        const id2 = systemId.toString().padStart(2, "0");
-        return fetch(`${System.#RepoURL}/systems/${id2}.json`).then(
-            (response) => response.json()
-        );
     }
 
-    description?: any;
+    handleUpdateComplete(): void {
+        Room.updateRoom();
+    }
+}
+
+
+
+export class System extends THREE.Group
+{
+    static template = new SystemLoader();
+
+    systemId: string;
     locations: Map<string, LocationData>;
     layout?: Layout;
     unitPlane?: THREE.Mesh;
+    top?: THREE.Mesh;
+    sides?: THREE.Mesh;
     tileId: number[];
 
     debugCanvas: HTMLCanvasElement | null = null;
 
     constructor(id: number | string) {
         super();
+        this.systemId = id.toString();
         this.locations = new Map(); // map of location name -> layout id and units in that location
         this.locations.set("space", { id: 0, items: [] });
         this.tileId = [0, 0];
 
-        System.#template.then((parts) => {
+        System.template.addConsumer(this, this.onDefinitionUpdated);
+    }
+
+    onDefinitionUpdated(definitions : Map<string,SystemDefinition>)
+    {
+        const def=definitions.get(this.systemId);
+        if (!def)
+        {
+            return;
+        }
+
+        this.name=def.name;
+        const model=System.template.template;
+        const texture=System.template.textures.Get(def.image);
+        Promise.all([model, texture]).then(([parts, texture]) =>
+        {
             const top = parts.top?.clone();
             const sides = parts.sides?.clone();
             if (top) this.add(top);
             if (sides) this.add(sides);
 
-            System.getDescription(id)
-                .then((data) => {
-                    this.description = data;
-                    this.layout = parts.types?.get(data.shipPositionsType);
-
-                    data.planets.forEach((name: string, index: number) => {
-                        let loc = this.locations.get(name);
-                        if (loc) {
-                            loc.id = index + 1;
-                        } else {
-                            this.locations.set(name, {
-                                id: index + 1,
-                                items: [],
-                            });
-                        }
+            this.layout = parts.types?.get(def.type);
+            def.planets.forEach((name: string, index: number) => {
+                let loc = this.locations.get(name);
+                if (loc) {
+                    loc.id = index + 1;
+                } else {
+                    this.locations.set(name, {
+                        id: index + 1,
+                        items: [],
                     });
-                    this.layoutItems();
+                }
+            });
+            this.layoutItems();
 
-                    if (top && "material" in top && "clone") {
-                        utils
-                            .loadTextureAsync(
-                                `${System.#RepoURL}/tiles/${data.imagePath}`
-                            )
-                            .then((texture) => {
-                                const topMat = (
-                                    top.material as THREE.MeshStandardMaterial
-                                ).clone();
-                                topMat.map = texture;
-                                top.material = topMat;
-                                Room.updateRoom();
-                            })
-                            .catch((error) => {
-                                console.error(
-                                    `Error loading '${data.imagePath}':`,
-                                    error
-                                );
-                            });
-                    }
-                })
-                .catch((error) => {
-                    console.error(
-                        `Error fetching description for system ${id}:`,
-                        error
-                    );
-                });
+            if (top && "material" in top && top.material instanceof THREE.Material)
+            {
+                top.material = utils.replaceColorInformation(top.material, undefined, texture, true);
+            }
             Room.updateRoom();
         });
     }
@@ -258,9 +301,8 @@ export class System extends THREE.Group {
 
     onObjectSelected() {
         document.querySelector("#system > #name")!.innerHTML = `${
-            this.description!.name
+            this.name
         } (${this.id})`;
-        console.log(JSON.stringify(this.description, null, 2));
         document.querySelector(
             "#system > #location"
         )!.innerHTML = `X: ${this.tileId[0]}, Y: ${this.tileId[1]}`;

@@ -31,9 +31,8 @@ export abstract class TemplateLoader<T> {
     abstract handleLoadTemplateAsync(url: string): Promise<Template<T>>;
     abstract handleUpdateComplete(): void;
 
-    #template: Promise<Template<T>> = new Promise<Template<T>>((resolve, _) => {
-        resolve(new Map<string, T>());
-    });
+    #template: Promise<Template<T>> = utils.makePromise(new Map<string, T>());
+    
     LoadTemplate(url: string): void {
         this.#template = this.handleLoadTemplateAsync(url);
         this.#template
@@ -84,6 +83,11 @@ export abstract class TemplateCache<T> {
             this.#cache.set(name, result);
             return result;
         }
+     }
+
+     Clear()
+     {
+        this.#cache.clear();
      }
 }
 

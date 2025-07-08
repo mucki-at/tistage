@@ -1,32 +1,33 @@
 {
-  "name": "tistage",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "makeColors": "node private/makeAsyncTIColors.mjs public/colors.glb",
-    "build": "tsc && vite build",
-    "postcheckout": "npm install && npx typia setup --manager npm && ts-patch install",
-    "preview": "vite preview",
-    "prepare": "ts-patch install"
-  },
-  "devDependencies": {
-    "@ryoppippi/unplugin-typia": "^2.6.5",
-    "@types/dat.gui": "^0.7.13",
-    "@types/matter-js": "^0.19.8",
-    "@types/three": "^0.177.0",
-    "canvas": "^3.1.2",
-    "filereader": "^0.10.3",
-    "node-three-gltf": "^2.0.2",
-    "ts-patch": "^3.3.0",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5"
-  },
-  "dependencies": {
-    "dat.gui": "^0.7.9",
-    "matter-js": "^0.20.0",
-    "three": "^0.177.0",
-    "typia": "^9.3.1"
-  }
+    "name": "tistage",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "makeColors": "node private/makeAsyncTIColors.mjs public/colors.glb",
+        "makeSystems": "node private/makeAsyncTISystems.mjs public/pbd/systems.json && node private/makeTTPGSystems.mjs public/ttpg/systems.json",
+        "build": "tsc && vite build",
+        "postcheckout": "npm install && npx typia setup --manager npm && ts-patch install",
+        "preview": "vite preview",
+        "prepare": "ts-patch install"
+    },
+    "devDependencies": {
+        "@ryoppippi/unplugin-typia": "^2.6.5",
+        "@types/dat.gui": "^0.7.13",
+        "@types/matter-js": "^0.19.8",
+        "@types/three": "^0.177.0",
+        "canvas": "^3.1.2",
+        "filereader": "^0.10.3",
+        "node-three-gltf": "^2.0.2",
+        "ts-patch": "^3.3.0",
+        "typescript": "~5.8.3",
+        "vite": "^6.3.5"
+    },
+    "dependencies": {
+        "dat.gui": "^0.7.9",
+        "matter-js": "^0.20.0",
+        "three": "^0.177.0",
+        "typia": "^9.3.1"
+    }
 }

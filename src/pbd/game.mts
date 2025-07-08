@@ -5,7 +5,7 @@ import { FactionToken } from "../tokens.mts";
 import { type GameState } from "../game.mts";
 import * as utils from "../utils.mts";
 import * as pbd from "./types.mts";
-import { assertEquals } from "typia";
+import { assert } from "typia";
 
 export class Game implements GameState {
     static unitNames : Record<string,string> = {
@@ -40,7 +40,7 @@ export class Game implements GameState {
         return utils
             .loadJsonAsync(Game.gameUrl(this.name))
             .then((data) => {
-                this.state = assertEquals<pbd.PlayerDataResponse>(data);
+                this.state = assert<pbd.PlayerDataResponse>(data);
                 if (this.state.versionSchema!=4)
                 {
                     console.warn(
