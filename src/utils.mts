@@ -10,7 +10,7 @@ export const gltf = new GLTFLoader();
 gltf.setDRACOLoader(dracoLoader);
 
 export const ErrorTexture = new THREE.DataTexture(new Uint8Array([255, 0, 255, 255]), 1, 1);
-export const ErrorMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+export const ErrorMaterial = new THREE.MeshBasicMaterial({ color: 0xff00ff , map:ErrorTexture});
 
 export function loadGltfMaterialAsync(url : string) : Promise<THREE.Material>
 {
@@ -102,40 +102,96 @@ export function loadJsonAsync(url:string)
         });
 }
 
-export function extractColorInformation(material : THREE.Material)
+export interface ColorMaterial
 {
-    let color = ErrorMaterial.color;
-    let map = ErrorMaterial.map;
-    if (("color" in material) && (material.color instanceof THREE.Color))
-    {
-        color = material.color;
-    }
-    if (("map" in material) && (material.map instanceof THREE.Texture))
-    {
-        map = material.map;
-    }
-    return { color: color, map: map };
+    color?: THREE.Color;
+    map?: THREE.Texture | null;
+}
+export type ColorInformation = ColorMaterial[]
+
+function isColorMaterial(mat: THREE.Material): mat is THREE.Material & ColorMaterial
+{
+    return ((!("color" in mat) || (mat.color instanceof THREE.Color)) &&
+        (!("map" in mat) || (mat.map === null) || (mat.map instanceof THREE.Texture)));
 }
 
-export function replaceColorInformation(material: THREE.Material | THREE.Material[], color: THREE.Color | undefined, map: THREE.Texture | undefined, clone: boolean) : typeof material
+export function getColorFromMaterial(mat: THREE.Material) : ColorMaterial
 {
-    if (Array.isArray(material)) {
-        return material.map((mat) =>
-            replaceColorInformation(mat, color, map, clone)
-        ) as THREE.Material[];
+    if (isColorMaterial(mat)) {
+        return mat;
+    } else if (("map" in mat) && (mat.map instanceof THREE.Texture)) {
+        return { map: mat.map };
+    } else if (("color" in mat) && (mat.color instanceof THREE.Color)) {
+        return { color: mat.color };
+    } else {
+        return {};
     }
-    else
-    {
-        if (clone) {
-            material = material.clone();
-        }
+}
 
-        if (color && "color" in material) {
-            material.color = color;
+export function replaceMaterialColor(
+    material: THREE.Material,
+    color: ColorMaterial,
+    clone: boolean
+): THREE.Material {
+    if (clone) {
+        material = material.clone();
+    }
+
+    if (color.color && "color" in material) {
+        material.color = color.color;
+    }
+    if (color.map && "map" in material) {
+        material.map = color.map;
+    }
+    return material;
+}
+
+export function getColors(object: THREE.Object3D) : ColorInformation
+{
+    let result : ColorInformation = [];
+
+    if ("material" in object)
+    {
+        if (Array.isArray(object.material))
+        {
+            result.concat(object.material.map((mat)=>getColorFromMaterial(mat)));
         }
-        if (map && "map" in material) {
-            material.map = map;
+        else if (object.material)
+        {
+            result.push(getColorFromMaterial(object.material as THREE.Material))
         }
-        return material;            
+        else
+        {
+            result.push({});
+        }
+    }
+
+    for (const c of object.children)
+    {
+        result.concat(getColors(c))
+    }
+
+    return result;
+}
+
+export function putColors(object: THREE.Object3D, colors: ColorInformation, replacement : ColorMaterial={}, clone = true)
+{
+    if ("material" in object)
+    {
+        if (Array.isArray(object.material))
+        {
+            object.material = object.material.map(
+                (mat) => replaceMaterialColor(mat, colors.shift() ?? replacement, clone)
+            );
+        } else if (object.material) {
+            object.material = replaceMaterialColor(object.material as THREE.Material, colors.shift() ?? replacement, clone);
+        } else {
+            colors.shift();
+        }
+    }
+
+    for (const c of object.children)
+    {
+        putColors(c, colors, replacement, clone);
     }
 }

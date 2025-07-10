@@ -126,7 +126,7 @@ const table = new Table(0.7, "wood_cabinet_worn_long_4k.gltf");
 room.add(table);
 
 const tokens = await utils.loadGltfMeshesAsync("tokens_low.glb");
-const cc=tokens.get("command")!;
+const cc = tokens.get("command")!;
 const own = tokens.get("own")!;
 
 let testCC : THREE.Mesh | undefined;
@@ -146,18 +146,13 @@ function tokenTest() {
     
     generateFactionTexture(options.faction, options.color, options.size).then((tex) => {
         testCC = cc.clone();
-        testCC.material = utils.replaceColorInformation(testCC.material, new THREE.Color(0xFFFFFF), tex, true);
+        utils.putColors(testCC, [{map:tex}]);
         testCC.position.set(-0.15,0.01,0);
         testCC.scale.set(10,10,10);
         table.add(testCC);
 
         testOwn = own.clone();
-        testOwn.material = utils.replaceColorInformation(
-            testOwn.material,
-            new THREE.Color(0xffffff),
-            tex,
-            true
-        );
+        utils.putColors(testOwn, [{ map: tex }]);
         testOwn.position.set(0.15, 0.01, 0);
         testOwn.scale.set(10, 10, 10);
         table.add(testOwn);

@@ -135,7 +135,9 @@ export class Unit extends THREE.Mesh {
         }
         else
         {
-            const color = utils.extractColorInformation(this.colorMaterial ?? utils.ErrorMaterial);
+            const color = utils.getColorFromMaterial(
+                this.colorMaterial ?? utils.ErrorMaterial
+            );
             let mat = this.modelMaterial;
             if (Array.isArray(mat))
             {

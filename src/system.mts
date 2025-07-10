@@ -7,8 +7,7 @@ import * as layout from "./unitlayout.mts";
 import { TemplateLoader, TemplateCache } from "./template.mts";
 import { assertEquals } from "typia";
 
-interface LocationData
-{
+interface LocationData {
     id: number;
     items: (Unit | Token)[];
 }
@@ -25,12 +24,11 @@ interface SystemDefinition {
 interface SystemDefinitions {
     modelUrl: string;
     imageUrl: string;
-    definitions: Record<string,SystemDefinition>;
+    definitions: Record<string, SystemDefinition>;
 }
 
 interface Template {
-    top?: THREE.Object3D;
-    sides?: THREE.Object3D;
+    tile?: THREE.Object3D;
     types?: Map<string, Layout>;
 }
 
@@ -39,25 +37,22 @@ class TextureCache extends TemplateCache<THREE.Texture> {
     handleLoadAsync(name: string): Promise<THREE.Texture> {
         return utils.loadTextureAsync(this.baseUrl + name);
     }
-};
+}
 
-export class SystemLoader extends TemplateLoader<SystemDefinition>
-{
-    template: Promise<Template> = utils.makePromise({top:undefined, sides:undefined, types:undefined});
+export class SystemLoader extends TemplateLoader<SystemDefinition> {
+    template: Promise<Template> = utils.makePromise({});
     textures: TextureCache = new TextureCache();
 
     handleLoadTemplateAsync(url: string) {
-        return utils.loadJsonAsync(url).then((json) =>
-        {
+        return utils.loadJsonAsync(url).then((json) => {
             const systems = assertEquals<SystemDefinitions>(json);
             this.textures.baseUrl = systems.imageUrl;
             this.textures.Clear();
 
-            this.template=utils.gltf
+            this.template = utils.gltf
                 .loadAsync(systems.modelUrl)
                 .then((result) => {
-                    const top = result.scene.getObjectByName("top");
-                    const sides = result.scene.getObjectByName("sides");
+                    const tile = result.scene.getObjectByName("system");
 
                     const boundsObj = result.scene.getObjectByName("bounds");
                     const bounds = {
@@ -93,18 +88,19 @@ export class SystemLoader extends TemplateLoader<SystemDefinition>
                         types.set(`TYPE${i2}`, { ...l, sampler: s });
                     }
 
-                    return { top: top, sides: sides, types: types };
+                    return { tile: tile, types: types };
                 })
                 .catch((reason) => {
                     console.error("Error loading System.glb:", reason);
                     return {
-                        top: undefined,
-                        sides: undefined,
+                        tile: undefined,
                         types: undefined,
                     };
                 });
-            
-            return new Map<string,SystemDefinition>(Object.entries(systems.definitions));
+
+            return new Map<string, SystemDefinition>(
+                Object.entries(systems.definitions)
+            );
         });
     }
 
@@ -113,18 +109,14 @@ export class SystemLoader extends TemplateLoader<SystemDefinition>
     }
 }
 
-
-
-export class System extends THREE.Group
-{
+export class System extends THREE.Group {
     static template = new SystemLoader();
 
     systemId: string;
     locations: Map<string, LocationData>;
     layout?: Layout;
     unitPlane?: THREE.Mesh;
-    top?: THREE.Mesh;
-    sides?: THREE.Mesh;
+    tile?: THREE.Mesh;
     tileId: number[];
 
     debugCanvas: HTMLCanvasElement | null = null;
@@ -139,23 +131,21 @@ export class System extends THREE.Group
         System.template.addConsumer(this, this.onDefinitionUpdated);
     }
 
-    onDefinitionUpdated(definitions : Map<string,SystemDefinition>)
-    {
-        const def=definitions.get(this.systemId);
-        if (!def)
-        {
+    onDefinitionUpdated(definitions: Map<string, SystemDefinition>) {
+        const def = definitions.get(this.systemId);
+        if (!def) {
             return;
         }
 
-        this.name=def.name;
-        const model=System.template.template;
-        const texture=System.template.textures.Get(def.image);
-        Promise.all([model, texture]).then(([parts, texture]) =>
-        {
-            const top = parts.top?.clone();
-            const sides = parts.sides?.clone();
-            if (top) this.add(top);
-            if (sides) this.add(sides);
+        this.name = def.name;
+        const model = System.template.template;
+        const texture = System.template.textures.Get(def.image);
+        Promise.all([model, texture]).then(([parts, texture]) => {
+            const tile = parts.tile?.clone();
+            if (tile) {
+                this.add(tile);
+                utils.putColors(tile, [{ map: texture }]);
+            }
 
             this.layout = parts.types?.get(def.type);
             def.planets.forEach((name: string, index: number) => {
@@ -171,10 +161,6 @@ export class System extends THREE.Group
             });
             this.layoutItems();
 
-            if (top && "material" in top && top.material instanceof THREE.Material)
-            {
-                top.material = utils.replaceColorInformation(top.material, undefined, texture, true);
-            }
             Room.updateRoom();
         });
     }
@@ -281,8 +267,7 @@ export class System extends THREE.Group
                         THREE.Object3D.DEFAULT_UP,
                         unit.angle
                     );
-                    if ("sustained" in location.items[i])
-                    {
+                    if ("sustained" in location.items[i]) {
                         if (location.items[i].sustained) {
                             location.items[i].rotateZ(
                                 Math.PI +
@@ -300,9 +285,9 @@ export class System extends THREE.Group
     }
 
     onObjectSelected() {
-        document.querySelector("#system > #name")!.innerHTML = `${
-            this.name
-        } (${this.id})`;
+        document.querySelector(
+            "#system > #name"
+        )!.innerHTML = `${this.name} (${this.id})`;
         document.querySelector(
             "#system > #location"
         )!.innerHTML = `X: ${this.tileId[0]}, Y: ${this.tileId[1]}`;
